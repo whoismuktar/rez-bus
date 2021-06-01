@@ -30,6 +30,11 @@ const routes = [
     component: () => import("../views/checkout.vue"),
   },
   {
+    path: "/transaction-summary", // to be converted to parameter
+    name: "TransactionSummary",
+    component: () => import("../components/transactrionSummary.vue"),
+  },
+  {
     path: "*",
     name: "Page Not Found",
     component: () => import("../views/404.vue"),
