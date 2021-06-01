@@ -216,8 +216,8 @@
           </div>
 
           <div class="route">
-            <div class="d-route begin">Destinaiton A</div>
-            <div class="d-route end">Destinaiton B</div>
+            <div class="d-route begin">Destination A</div>
+            <div class="d-route end">Destination B</div>
           </div>
 
           <div class="d-flex justify-space-between">
@@ -373,40 +373,5 @@ export default {
 }
 .slideCoupon {
   cursor: pointer;
-}
-.d-route {
-  position: relative;
-  padding-left: 20px;
-}
-.d-route::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 10px;
-  height: 10px;
-  top: 31%;
-  border-radius: 50%;
-}
-.d-route::after {
-  content: "";
-  position: absolute;
-  top: 15px;
-  left: 4px;
-  width: 2px;
-  height: 100%;
-  background-color: var(--v-secondary-base);
-}
-.d-route.begin::before {
-  background: transparent;
-  border: 2px solid var(--v-secondary-base);
-}
-.d-route.end::before {
-  background-color: var(--v-secondary-base);
-}
-.d-route.end::after {
-  display: none;
-}
-.checkout-summary {
-  top: 0;
 }
 </style>
