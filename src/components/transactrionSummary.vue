@@ -20,7 +20,16 @@
         <b>user@website.com</b>
       </div>
 
-      <router-link to="#">Vous n'avez pas reçu l'email?</router-link>
+      <v-btn
+        text
+        plain
+        color="primary"
+        class="gen-button"
+        :ripple="false"
+        @click="modalActive = true"
+      >
+        Vous n'avez pas reçu l'email?
+      </v-btn>
 
       <div class="text-center my-5">
         <v-btn depressed color="primary" class="gen-button mr-2">Billet</v-btn>
@@ -92,11 +101,34 @@
         </v-row>
       </div>
     </div>
+
+    <!-- Dialog -->
+    <v-dialog
+      v-model="modalActive"
+      max-width="500px"
+      content-class="no-box-shadow"
+    >
+      <div class="def-section text-center">
+        <div>
+          <b>Confirmez votre adresse mail</b>
+        </div>
+        <v-text-field
+          v-model="email"
+          outlined
+          class="centered-input"
+        ></v-text-field>
+        <v-btn color="primary" class="gen-button">Renvoyer</v-btn>
+      </div>
+    </v-dialog>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return { modalActive: false, email: "user@email.com" };
+  },
+};
 </script>
 
 <style scoped>
