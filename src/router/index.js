@@ -32,7 +32,7 @@ const routes = [
   {
     path: "/transaction-summary", // to be converted to parameter
     name: "TransactionSummary",
-    component: () => import("../components/transactrionSummary.vue"),
+    component: () => import("../components/transactionSummary.vue"),
   },
   {
     path: "*",
