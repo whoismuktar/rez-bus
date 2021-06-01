@@ -120,6 +120,9 @@ hr.broken {
 .x1-5transform {
   transform: scale(1.5);
 }
+.centered-input input {
+  text-align: center;
+}
 
 .v-radio .v-input--selection-controls__input {
   transform: scale(1.3);
