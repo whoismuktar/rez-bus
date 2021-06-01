@@ -12,12 +12,16 @@ body {
 a {
   text-decoration: none;
 }
-
 hr {
   height: 1px;
   width: 100%;
   background-color: var(--v-borderLine-base);
   border: 0;
+}
+hr.broken {
+  border: 0;
+  border-bottom: 1px dashed var(--v-borderLine-base);
+  background-color: unset;
 }
 .position-relative {
   position: relative;
@@ -63,8 +67,13 @@ hr {
 .marginCenter {
   margin: 0 auto;
 }
+.centerWidth50 {
+  width: 50%;
+  margin: 0 auto;
+}
 .gen-button {
     text-transform: capitalize;
+    letter-spacing: 0;
 }
 .no-Btn-bg::before {
    background-color: transparent !important; /* Remove default gover bg color from button */
@@ -101,6 +110,9 @@ hr {
   border: 1px solid var(--v-borderLine-base);
   margin-bottom: 20px;
 }
+.primary-border {
+  border: 1px solid var(--v-primary-base);
+}
 .v-icon {
   font-size: 25px !important;
 }
@@ -127,4 +139,42 @@ hr {
 }
 .vue-tel-input-vuetify .country-code .v-input__slot {
   margin-bottom: 0 !important;
+}
+
+// route styling
+
+.d-route {
+  position: relative;
+  padding-left: 20px;
+}
+.d-route::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  top: 31%;
+  border-radius: 50%;
+}
+.d-route::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 4px;
+  width: 2px;
+  height: 100%;
+  background-color: var(--v-secondary-base);
+}
+.d-route.begin::before {
+  background: transparent;
+  border: 2px solid var(--v-secondary-base);
+}
+.d-route.end::before {
+  background-color: var(--v-secondary-base);
+}
+.d-route.end::after {
+  display: none;
+}
+.checkout-summary {
+  top: 0;
 }
