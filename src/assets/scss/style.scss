@@ -1,16 +1,17 @@
-@import '~vuetify/src/styles/styles.sass';
-@import 'vuetify-override.scss';
-
-body {
-  font-family: 'Ubuntu', sans-serif;
-  position: relative;
-}
+@import url('https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp');
 
 .v-application {
+  font-family: "Roboto", Arial, Helvetica, sans-serif, 'Times New Roman', 'Calibri';
+
   background-color: var(--v-bodyBG-base);
+  color: var(--v-secondary3-base) !important;
 }
-a {
+.v-application a {
   text-decoration: none;
+  color: var(--v-secondary-base) !important;
+}
+.app-title {
+  font-size: 28px;
 }
 hr {
   height: 1px;
@@ -137,8 +138,13 @@ hr.broken {
 .primary-border {
   border: 1px solid var(--v-primary-base);
 }
-.v-icon {
+.v-application .v-icon,
+i.material-icons-outlined {
   font-size: 20px !important;
+  color: var(--v-secondary-base);
+}
+i.material-icons-outlined {
+  vertical-align: middle;
 }
 .icon-outlined {
   border-radius: 50%;
