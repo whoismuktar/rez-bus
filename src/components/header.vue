@@ -8,6 +8,7 @@
           src="@/assets/logo.svg"
           transition="scale-transition"
           width="86"
+          height="auto"
         />
       </v-app-bar-nav-icon>
 
