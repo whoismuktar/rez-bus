@@ -66,6 +66,7 @@
             </div>
             <v-text-field
               v-model="password"
+              dense
               outlined
               hide-details
               :append-icon="show1 ? 'visibility' : 'visibility_off'"
@@ -82,6 +83,7 @@
 
             <v-text-field
               v-model="confirmPassword"
+              dense
               outlined
               hide-details
               :append-icon="show2 ? 'visibility' : 'visibility_off'"
