@@ -11,8 +11,8 @@
         transaction-summary-wrapper
       "
     >
-      <v-icon>mdi-email-open</v-icon>
-      <h2>Réservation réssie</h2>
+      <v-icon>drafts</v-icon>
+      <h2 class="app-title">Réservation réssie</h2>
 
       <div>Merci de voyager avec RezBus!</div>
       <div>
@@ -41,15 +41,13 @@
 
       <div class="def-section primary-border text-left">
         <div class="d-flex align-start">
-          <v-icon color="primary" class="mr-2">mdi-information-outline</v-icon>
+          <i class="material-icons-outlined mr-2"> info </i>
           <div>
             Cliquez ici pour plus d'informations Cliquez ici pour plus
             d'informations Cliquez ici pour plus d'informations Cliquez ici pour
             plus d'informations Cliquez ici pour plus d'informations Cliquez ici
             pour plus d'informations Cliquez ici pour plus d'informations plus
-            <router-link to="#" color="primary">
-              https://corona-virus-link
-            </router-link>
+            <router-link to="#"> https://corona-virus-link </router-link>
           </div>
         </div>
       </div>
@@ -93,7 +91,7 @@
           <v-col cols="3">
             <div>
               <v-btn outlined color="primary" class="gen-button">
-                <v-icon>mdi-calendar-text</v-icon>
+                <v-icon>date_range</v-icon>
                 Ajouter à ...
               </v-btn>
             </div>

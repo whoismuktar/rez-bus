@@ -4,7 +4,7 @@
       style="height: 100vh"
       class="d-flex flex-column justify-center align-center"
     >
-      <h2 class="text-center"><b>404</b></h2>
+      <h2 class="app-title text-center"><b>404</b></h2>
     </div>
   </div>
 </template>

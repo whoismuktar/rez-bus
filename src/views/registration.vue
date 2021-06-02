@@ -68,7 +68,7 @@
               v-model="password"
               outlined
               hide-details
-              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+              :append-icon="show1 ? 'visibility' : 'visibility_off'"
               :rules="[rules.required]"
               :type="show1 ? 'text' : 'password'"
               @click:append="show1 = !show1"
@@ -84,7 +84,7 @@
               v-model="confirmPassword"
               outlined
               hide-details
-              :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+              :append-icon="show2 ? 'visibility' : 'visibility_off'"
               :type="show1 ? 'text' : 'password'"
               @paste.prevent
               @click:append="show2 = !show2"

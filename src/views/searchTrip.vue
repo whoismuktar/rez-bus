@@ -32,10 +32,13 @@
                     v-model="query.from"
                     dense
                     outlined
-                    prepend-inner-icon="mdi-map-marker"
-                    append-icon="mdi-swap-horizontal"
+                    append-icon="swap_horiz"
                     class="join-input-left route-from"
-                  ></v-text-field>
+                  >
+                    <template slot="prepend-inner-icon">
+                      <i class="material-icons-outlined"> power </i>
+                    </template>
+                  </v-text-field>
                 </div>
 
                 <div>
@@ -44,7 +47,7 @@
                     v-model="query.to"
                     dense
                     outlined
-                    prepend-inner-icon="mdi-map-marker"
+                    prepend-inner-icon="location_on"
                     class="join-input-last route-to"
                   ></v-text-field>
                 </div>
@@ -63,7 +66,7 @@
                     <v-text-field
                       :value="query.rideDate"
                       placeholder="Pick a date"
-                      prepend-inner-icon="mdi-calendar"
+                      prepend-inner-icon="date_range"
                       persistent-hint
                       dense
                       outlined
@@ -98,7 +101,7 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
                       outlined
-                      append-inner-icon="mdi-map-marker"
+                      append-inner-icon="location_on"
                       class="
                         parentWidth
                         gen-button
@@ -113,46 +116,46 @@
                         {{ query.bike_slot }} Vélos</span
                       >
                       <div class="text-right">
-                        <v-icon right>mdi-chevron-down</v-icon>
+                        <v-icon right>expand_more</v-icon>
                       </div>
                     </v-btn>
                   </template>
                   <div class="chooseDetails-board def-section mb-0">
                     <div class="chooseDetails-layer">
                       <div class="chooseDetails-text">
-                        <h2>Adultes</h2>
+                        <h2 class="app-title">Adultes</h2>
                         <div>à partir de 16 ans</div>
                       </div>
                       <div class="chooseDetails-action">
                         <v-btn depressed plain small :ripple="false">
-                          <v-icon>mdi-minus</v-icon>
+                          <v-icon>remove</v-icon>
                         </v-btn>
                         <span class="persons-qty">3</span>
                         <v-btn depressed plain small :ripple="false">
-                          <v-icon>mdi-plus</v-icon>
+                          <v-icon>add</v-icon>
                         </v-btn>
                       </div>
                     </div>
 
                     <div class="chooseDetails-layer">
                       <div class="chooseDetails-text">
-                        <h2>Enfants</h2>
+                        <h2 class="app-title">Enfants</h2>
                         <div>de 0 à 15 ans</div>
                       </div>
                       <div class="chooseDetails-action">
                         <v-btn depressed plain small :ripple="false">
-                          <v-icon>mdi-minus</v-icon>
+                          <v-icon>remove</v-icon>
                         </v-btn>
                         <span class="persons-qty">3</span>
                         <v-btn depressed plain small :ripple="false">
-                          <v-icon>mdi-plus</v-icon>
+                          <v-icon>add</v-icon>
                         </v-btn>
                       </div>
                     </div>
 
                     <div class="chooseDetails-layer">
                       <div class="chooseDetails-text">
-                        <h2>Vélos</h2>
+                        <h2 class="app-title">Vélos</h2>
                         <div>
                           Les vélos électriques ne sont pas autorisés dans les
                           bus.
@@ -160,11 +163,11 @@
                       </div>
                       <div class="chooseDetails-action">
                         <v-btn depressed plain small :ripple="false">
-                          <v-icon>mdi-minus</v-icon>
+                          <v-icon>remove</v-icon>
                         </v-btn>
                         <span class="persons-qty">1</span>
                         <v-btn depressed plain small :ripple="false">
-                          <v-icon>mdi-plus</v-icon>
+                          <v-icon>add</v-icon>
                         </v-btn>
                       </div>
                     </div>
@@ -400,8 +403,8 @@
               </div>
             </div>
 
-            <div class="def-section py-3">
-              <v-icon>mdi-information-outline</v-icon>
+            <div class="def-section py-3 d-flex align-center">
+              <i class="material-icons-outlined mr-1"> info </i>
               <span
                 >Veuillez consulter les
                 <router-link to="#">
@@ -470,29 +473,29 @@
                   <div class="d-flex align-center justify-space-between mt-4">
                     <div>
                       <div v-if="station.tripType == 'direct'">
-                        <v-icon class="icon-outlined">mdi-bus</v-icon>
+                        <v-icon class="icon-outlined">directions_bus</v-icon>
                         <span class="mx-1">Direct</span>
-                        <v-icon>mdi-chevron-down</v-icon>
+                        <v-icon>expand_more</v-icon>
                       </div>
 
                       <div v-else class="d-flex align-center">
                         <div>
-                          <v-icon class="icon-outlined">mdi-bus</v-icon>
+                          <v-icon class="icon-outlined">directions_bus</v-icon>
                           <v-icon class="icon-outlined tiny mx-n2">
-                            mdi-chevron-right
+                            chevron_right
                           </v-icon>
-                          <v-icon class="icon-outlined">mdi-bus</v-icon>
+                          <v-icon class="icon-outlined">directions_bus</v-icon>
                         </div>
                         <span class="mx-1">1 Corresp.</span>
-                        <v-icon>mdi-chevron-down</v-icon>
+                        <v-icon>expand_more</v-icon>
                       </div>
                     </div>
 
                     <div class="d-flex justify-self-end">
                       <div v-if="station.isUtilityActive">
-                        <v-icon>mdi-wifi</v-icon>
-                        <v-icon>mdi-power-socket</v-icon>
-                        <v-icon>mdi-spray</v-icon>
+                        <v-icon>wifi</v-icon>
+                        <i class="material-icons-outlined"> power </i>
+                        <i class="material-icons-outlined"> sanitizer </i>
                       </div>
 
                       <div
@@ -516,11 +519,11 @@
                       justify-space-between
                     "
                   >
-                    <h1 class="fareCost">
+                    <h2 class="app-title fareCost">
                       <span>{{ station.fare.toString().split(".")[0] }}</span>
                       <sup>,{{ station.fare.toString().split(".")[1] }}</sup>
                       <span class="currency">€</span>
-                    </h1>
+                    </h2>
                     <v-btn depressed color="primary" class="gen-button">
                       Réserver
                       {{ parseInt(query.adult) + parseInt(query.children) }}

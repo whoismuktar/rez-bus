@@ -50,15 +50,15 @@
 
             <div class="selection-wrapper" @click="modalActive">
               <div class="d-flex">
-                <v-icon large>mdi-seat-recline-extra</v-icon>
+                <v-icon>airline_seat_recline_normal</v-icon>
                 <div class="ml-3">
-                  <h2>Sélectionnez votre siège</h2>
+                  <h2 class="app-title">Sélectionnez votre siège</h2>
                   <p>à partir de 2,99 €</p>
                 </div>
 
                 <v-spacer></v-spacer>
 
-                <v-icon>mdi-chevron-right</v-icon>
+                <v-icon>chevron_right</v-icon>
               </div>
             </div>
           </div>
@@ -74,29 +74,29 @@
 
             <div class="selection-wrapper" @click="modalActive">
               <div class="d-flex">
-                <v-icon large>mdi-seat-recline-extra</v-icon>
+                <v-icon large>airline_seat_recline_normal</v-icon>
                 <div class="ml-3">
-                  <h2>Assurances</h2>
+                  <h2 class="app-title">Assurances</h2>
                   <p>à partir de 0,69 €</p>
                 </div>
 
                 <v-spacer></v-spacer>
 
-                <v-icon>mdi-chevron-right</v-icon>
+                <v-icon>chevron_right</v-icon>
               </div>
             </div>
 
             <div class="selection-wrapper" @click="modalActive">
               <div class="d-flex">
-                <v-icon large>mdi-seat-recline-extra</v-icon>
+                <v-icon large>airline_seat_recline_normal</v-icon>
                 <div class="ml-3">
-                  <h2>Bagage supplémentaire</h2>
+                  <h2 class="app-title">Bagage supplémentaire</h2>
                   <p>à partir de 3,99 €</p>
                 </div>
 
                 <v-spacer></v-spacer>
 
-                <v-icon>mdi-chevron-right</v-icon>
+                <v-icon>chevron_right</v-icon>
               </div>
             </div>
 
@@ -105,12 +105,12 @@
               <div class="d-flex align-start">
                 <v-icon large>mdi-leaf</v-icon>
                 <div class="mt-n1 ml-3">
-                  <h2>Bagage supplémentaire</h2>
+                  <h2 class="app-title">Bagage supplémentaire</h2>
                   <p>à partir de 3,99 €</p>
                 </div>
               </div>
               <v-spacer></v-spacer>
-              <v-icon>mdi-chevron-right</v-icon>
+              <v-icon>chevron_right</v-icon>
             </div>
           </div>
         </div>
@@ -235,9 +235,9 @@
           <!-- Coupon -->
           <div class="sub-coupon primary--text">
             <p @click="slideCoupon" class="slideCoupon">
-              <v-icon color="primary">mdi-ticket</v-icon>
+              <v-icon color="primary">book_online</v-icon>
               <span> Saisir le bon d'achat</span>
-              <v-icon color="primary">mdi-chevron-down</v-icon>
+              <v-icon color="primary">expand_more</v-icon>
             </p>
             <div class="d-flex">
               <v-text-field
