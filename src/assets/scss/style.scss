@@ -23,6 +23,13 @@ hr.broken {
   border-bottom: 1px dashed var(--v-borderLine-base);
   background-color: unset;
 }
+.right-vert-divider::after {
+  content: "";
+  height: 60%;
+  background-color: var(--v-borderLine-base);
+  width: 2px;
+  margin-left: 15px;
+}
 .position-relative {
   position: relative;
 }
@@ -35,7 +42,9 @@ hr.broken {
 .position-sticky {
   position: sticky;
 }
-
+.cursorMe {
+    cursor: pointer;
+}
 .borderTest{
   border: 1px solid black !important;
 }
@@ -129,10 +138,12 @@ hr.broken {
 }
 
 // Country Input
+.join-input-left,
 .vue-tel-input-vuetify .v-text-field--outlined:first-child {
   border-top-right-radius: 0px !important;
   border-bottom-right-radius: 0px !important;
 }
+.join-input-last,
 .vue-tel-input-vuetify .v-text-field--outlined:nth-child(2) {
   border-top-left-radius: 0px !important;
   border-bottom-left-radius: 0px !important;
