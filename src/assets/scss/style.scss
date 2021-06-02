@@ -23,12 +23,27 @@ hr.broken {
   border-bottom: 1px dashed var(--v-borderLine-base);
   background-color: unset;
 }
+.right-vert-divider,
+.left-vert-divider {
+  position: relative;
+}
+.left-vert-divider {
+  padding-left: 22px;
+}
 .right-vert-divider::after {
   content: "";
   height: 60%;
   background-color: var(--v-borderLine-base);
   width: 2px;
   margin-left: 15px;
+}
+.left-vert-divider::before {
+  content: "";
+    height: 100%;
+    background-color: var(--v-borderLine-base);
+    width: 2px;
+    left: 10px;
+    position: absolute;
 }
 .position-relative {
   position: relative;
@@ -123,9 +138,23 @@ hr.broken {
   border: 1px solid var(--v-primary-base);
 }
 .v-icon {
-  font-size: 25px !important;
+  font-size: 20px !important;
 }
-
+.icon-outlined {
+  border-radius: 50%;
+  border: 1px solid var(--v-borderLine-base);
+  height: 40px;
+  width: 40px;
+}
+.v-icon.tiny {
+  font-size: 10px !important;
+}
+.icon-outlined.tiny {
+  border-radius: 50%;
+  border: 1px solid var(--v-borderLine-base);
+  height: 15px;
+  width: 15px;
+}
 .x1-5transform {
   transform: scale(1.5);
 }
