@@ -439,7 +439,7 @@
                         {{ station.start }}
                       </b>
                       <div class="time-separator">
-                        <span>9:10h</span>
+                        <span>{{ station.duration }}</span>
                       </div>
                       <b class="searchResult-tab-end ml-2">
                         {{ station.end }}
@@ -553,6 +553,17 @@ export default {
           isUtilityActive: true,
           emptyStatus: false,
           fare: 90.34,
+        },
+        {
+          start: "9:10",
+          duration: "11:10h",
+          end: "8:10",
+          startStops: ["start1", "start2", "start3", "start4"],
+          endStops: ["Dest1", "Dest2", "Dest3", "Dest4"],
+          tripType: "transfer",
+          isUtilityActive: true,
+          emptyStatus: false,
+          fare: 101.55,
         },
       ],
       searchResult: {},
