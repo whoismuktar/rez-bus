@@ -343,7 +343,7 @@
                     color="primary"
                     class="gen-button pa-0 mr-3 right-vert-divider"
                     :ripple="false"
-                    @click="selectAllFromStops"
+                    @click="selectAllToStops"
                   >
                     Tout sélectionner
                   </v-btn>
@@ -353,7 +353,7 @@
                     color="primary"
                     class="gen-button pa-0"
                     :ripple="false"
-                    @click="resetAllFromStops"
+                    @click="resetAllToStops"
                   >
                     Tout effacer
                   </v-btn>
@@ -381,7 +381,156 @@
               </div>
             </div>
           </v-col>
-          <v-col cols="8"></v-col>
+
+          <v-col cols="8">
+            <div class="d-flex align-center justify-space-between">
+              <div>Voyage aller</div>
+
+              <div>
+                <div>Trier selon</div>
+                <v-select
+                  outlined
+                  dense
+                  :menu-props="{ offsetY: true }"
+                  background-color="white"
+                  :items="sortBy"
+                  item-text="text"
+                  item-value="sortBy"
+                ></v-select>
+              </div>
+            </div>
+
+            <div class="def-section py-3">
+              <v-icon>mdi-information-outline</v-icon>
+              <span
+                >Veuillez consulter les
+                <router-link to="#">
+                  consignes des autorités compétentes
+                </router-link>
+                avant de voyager.</span
+              >
+            </div>
+
+            <div class="def-section position-relative">
+              <div class="text-uppercase">Voyager en toute sécurité</div>
+              <b>Nous nous engageons à assurer votre sécurité</b>
+              <div>Pour la sécurité de tous :</div>
+              <ul>
+                <li v-for="(rule, index) in safetyRules" :key="index">
+                  {{ rule }}
+                </li>
+              </ul>
+
+              <router-link to="#" class="check-guidelines">
+                Consultez nos consignes
+              </router-link>
+            </div>
+
+            <div
+              v-for="(station, index) in stations"
+              :key="index"
+              class="def-section searchResult-tab"
+            >
+              <v-row>
+                <v-col cols="8">
+                  <div>
+                    <div class="d-flex">
+                      <b class="searchResult-tab-start mr-2">
+                        {{ station.start }}
+                      </b>
+                      <div class="time-separator">
+                        <span>9:10h</span>
+                      </div>
+                      <b class="searchResult-tab-end ml-2">
+                        {{ station.end }}
+                      </b>
+                    </div>
+
+                    <div class="d-flex justify-space-bewteen">
+                      <div class="stopsDests-start">
+                        <span
+                          v-for="(stop, index) in station.startStops"
+                          :key="index"
+                        >
+                          {{ stop }}
+                        </span>
+                      </div>
+                      <div class="spacer-b"></div>
+                      <div class="stopsDests-end">
+                        <span
+                          v-for="(dest, index) in station.endStops"
+                          :key="index"
+                        >
+                          {{ dest }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="d-flex align-center justify-space-between mt-4">
+                    <div>
+                      <div v-if="station.tripType == 'direct'">
+                        <v-icon class="icon-outlined">mdi-bus</v-icon>
+                        <span class="mx-1">Direct</span>
+                        <v-icon>mdi-chevron-down</v-icon>
+                      </div>
+
+                      <div v-else class="d-flex align-center">
+                        <div>
+                          <v-icon class="icon-outlined">mdi-bus</v-icon>
+                          <v-icon class="icon-outlined tiny mx-n2">
+                            mdi-chevron-right
+                          </v-icon>
+                          <v-icon class="icon-outlined">mdi-bus</v-icon>
+                        </div>
+                        <span class="mx-1">1 Corresp.</span>
+                        <v-icon>mdi-chevron-down</v-icon>
+                      </div>
+                    </div>
+
+                    <div class="d-flex justify-self-end">
+                      <div v-if="station.isUtilityActive">
+                        <v-icon>mdi-wifi</v-icon>
+                        <v-icon>mdi-power-socket</v-icon>
+                        <v-icon>mdi-spray</v-icon>
+                      </div>
+
+                      <div
+                        v-if="!station.emptyStatus"
+                        class="left-vert-divider"
+                      >
+                        <v-icon>groups</v-icon>
+                        <span>Presque vide</span>
+                      </div>
+                    </div>
+                  </div>
+                </v-col>
+
+                <v-col cols="4">
+                  <div
+                    class="
+                      parentHeight
+                      d-flex
+                      flex-column
+                      align-end
+                      justify-space-between
+                    "
+                  >
+                    <h1 class="fareCost">
+                      <span>{{ station.fare.toString().split(".")[0] }}</span>
+                      <sup>,{{ station.fare.toString().split(".")[1] }}</sup>
+                      <span class="currency">€</span>
+                    </h1>
+                    <v-btn depressed color="primary" class="gen-button">
+                      Réserver
+                      {{ parseInt(query.adult) + parseInt(query.children) }}
+                      sièges
+                    </v-btn>
+                  </div>
+                </v-col>
+              </v-row>
+            </div>
+          </v-col>
         </v-row>
       </div>
     </div>
@@ -393,12 +542,26 @@ export default {
   data() {
     return {
       query: {},
+      stations: [
+        {
+          start: "7:10",
+          duration: "9:10h",
+          end: "10:10",
+          startStops: ["start1", "start2", "start3", "start4"],
+          endStops: ["Dest1", "Dest2", "Dest3", "Dest4"],
+          tripType: "direct",
+          isUtilityActive: true,
+          emptyStatus: false,
+          fare: 90.34,
+        },
+      ],
       searchResult: {},
       fromRange: [0, 1300],
       minFromTime: 0,
       maxFromTime: 1300,
       minToTime: 0,
       maxToTime: 0,
+      nowDate: new Date().toISOString().slice(0, 10),
       fromStops: [
         { isActive: true, ext: "a", count: 15 },
         { isActive: true, ext: "b", count: 4 },
@@ -411,7 +574,18 @@ export default {
         { isActive: false, ext: "c", count: 44 },
         { isActive: false, ext: "d", count: 27 },
       ],
-      nowDate: new Date().toISOString().slice(0, 10),
+      sortBy: [
+        { sortBy: "departure", text: "Prix (le plus bas)" },
+        { sortBy: "price", text: "Départ (le plus tôt)" },
+        { sortBy: "duration", text: "Durée (la moins longue)" },
+      ],
+      safetyRules: [
+        "L'enregistrement se fait sans contact",
+        "Les bus sont entièrement désinfectés",
+        "Nos trains sont soigneusement nettoyés",
+        "Les passagers doivent porter un masque",
+        "Veuillez rester assis lorsque vous êtes à bord",
+      ],
     };
   },
   methods: {
@@ -486,5 +660,57 @@ export default {
 }
 .searchResult-child:not(:last-child) {
   border-bottom: 1px solid var(--v-borderLine-base);
+}
+.check-guidelines {
+  position: absolute;
+  right: 15px;
+  bottom: 20px;
+}
+.searchResult-tab .v-icon {
+  cursor: pointer;
+}
+.searchResult-tab .icon-outlined.tiny {
+  background-color: white;
+  position: relative;
+  z-index: 1;
+}
+.stopsDests-start {
+  width: calc(8px + 30%);
+}
+.stopsDests-end {
+  width: 25%;
+}
+.searchResult-tab .spacer-b {
+  width: calc(16px + 40%);
+}
+.time-separator {
+  position: relative;
+  width: 60%;
+  text-align: center;
+}
+.time-separator span {
+  position: relative;
+  z-index: 1;
+  background-color: #ffffff;
+  padding: 0 8px;
+}
+.time-separator::before,
+.time-separator::after {
+  content: "";
+  position: absolute;
+  width: 50%;
+  height: 1px;
+  background-color: var(--v-borderLine-base);
+  top: 50%;
+}
+.time-separator::before {
+  left: 0;
+}
+.time-separator::after {
+  right: 0;
+}
+.searchResult-tab-start,
+.searchResult-tab-end {
+  width: 11%;
 }
 </style>
