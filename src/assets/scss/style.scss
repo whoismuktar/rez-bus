@@ -1,5 +1,12 @@
+@import "_variables.scss";
 @import url('https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp');
 
+.mainBody {
+  padding-top: $app-top-spacing !important;
+}
+.hero-comp {
+  margin-top: (-$app-top-spacing);
+}
 .v-application {
   font-family: "Roboto", Arial, Helvetica, sans-serif, 'Times New Roman', 'Calibri';
 
