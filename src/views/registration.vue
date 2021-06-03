@@ -14,7 +14,7 @@
               v-model="nom"
               dense
               outlined
-              hide-details
+              hide-details="auto"
               :rules="[rules.required, rules.min3]"
             ></v-text-field>
           </div>
@@ -27,7 +27,7 @@
               v-model="prenom"
               dense
               outlined
-              hide-details
+              hide-details="auto"
               :rules="[rules.required, rules.min4]"
             ></v-text-field>
           </div>
@@ -40,7 +40,7 @@
               v-model="email"
               dense
               outlined
-              hide-details
+              hide-details="auto"
               :rules="[rules.email, rules.required]"
             ></v-text-field>
           </div>
@@ -54,7 +54,7 @@
               v-model.number="tel"
               dense
               outlined
-              hide-details
+              hide-details="auto"
               label=""
               :rules="[rules.number]"
             />
@@ -68,7 +68,7 @@
               v-model="password"
               dense
               outlined
-              hide-details
+              hide-details="auto"
               :append-icon="show1 ? 'visibility' : 'visibility_off'"
               :rules="[rules.required]"
               :type="show1 ? 'text' : 'password'"
@@ -85,7 +85,7 @@
               v-model="confirmPassword"
               dense
               outlined
-              hide-details
+              hide-details="auto"
               :append-icon="show2 ? 'visibility' : 'visibility_off'"
               :type="show1 ? 'text' : 'password'"
               @paste.prevent
@@ -112,11 +112,44 @@
           </div>
 
           <div class="text-right">
-            <v-btn color="primary" x-large> S'inscrire </v-btn>
+            <v-btn
+              depressed
+              x-large
+              color="primary"
+              class="gen-button"
+              @click.prevent="register"
+            >
+              S'inscrire
+            </v-btn>
           </div>
         </v-form>
       </v-col>
     </v-row>
+
+    <!-- Dialog -->
+    <v-dialog
+      v-model="modalActive"
+      max-width="500px"
+      content-class="no-box-shadow"
+    >
+      <div class="def-section text-center">
+        <div>
+          <h2 class="app-title">Inscription réussie</h2>
+        </div>
+        <div>Veuillez vérifier votre email pour valider votre inscription</div>
+
+        <v-btn
+          dark
+          depressed
+          x-large
+          color="primary"
+          class="gen-button"
+          @click="$router.push('/signin')"
+        >
+          Continuez
+        </v-btn>
+      </div>
+    </v-dialog>
   </div>
 </template>
 
@@ -130,6 +163,7 @@ export default {
   },
   data() {
     return {
+      modalActive: false,
       nom: "",
       prenom: "",
       email: "",
@@ -140,6 +174,15 @@ export default {
       show1: false,
       show2: false,
     };
+  },
+  methods: {
+    register() {
+      const validation = this.$refs.registerForm.validate();
+      if (!validation) {
+        this.modalActive = true;
+        this.registerSuccess = true;
+      }
+    },
   },
   computed: {
     ...mapGetters(["rules"]),
