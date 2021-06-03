@@ -26,8 +26,7 @@ export default {
 
 <style scoped>
 .header {
-  /* box-shadow: 0 5px 6px 0px var(--v-secondary-lighten5); */
-  border-bottom: 1px solid var(--v-secondary3-base);
+  border-bottom: 1px solid var(--v-secondary3-lighten5);
   height: 80px;
   display: flex;
   align-items: center;
