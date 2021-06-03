@@ -3,9 +3,17 @@
     <v-row justify="center">
       <v-col cols="12" lg="5" md="6">
         <div class="form-prelude">
-          <div>J’ai un compte <v-icon>add</v-icon></div>
+          <div>
+            J’ai un compte
+            <v-icon class="cursorMe" @click="$router.push('/signin')">
+              expand_less
+            </v-icon>
+          </div>
           <div class="separator"><span>ou</span></div>
-          <div>Je souhaite m'inscrire</div>
+          <div>
+            Je souhaite m'inscrire
+            <v-icon class="cursorMe"> expand_more </v-icon>
+          </div>
         </div>
         <v-form ref="registerForm">
           <div class="input-wrapper">
@@ -87,7 +95,7 @@
               outlined
               hide-details="auto"
               :append-icon="show2 ? 'visibility' : 'visibility_off'"
-              :type="show1 ? 'text' : 'password'"
+              :type="show2 ? 'text' : 'password'"
               @paste.prevent
               @click:append="show2 = !show2"
               :rules="[
@@ -100,7 +108,7 @@
             <v-checkbox
               v-model="agree"
               outlined
-              hide-details
+              hide-details="auto"
               class="noSpaceCheckbox"
               :rules="[rules.required]"
             ></v-checkbox>
@@ -178,7 +186,7 @@ export default {
   methods: {
     register() {
       const validation = this.$refs.registerForm.validate();
-      if (!validation) {
+      if (validation) {
         this.modalActive = true;
         this.registerSuccess = true;
       }
