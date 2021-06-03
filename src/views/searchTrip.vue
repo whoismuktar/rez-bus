@@ -655,7 +655,7 @@ export default {
       }
 
       console.log(str);
-      this.$router.push("/search-trip?" + str).catch(() => {});
+      window.location.href = "/search-trip?" + str;
     },
     selectAllFromStops() {
       this.fromStops.map((stop) => (stop.isActive = true));
@@ -673,6 +673,7 @@ export default {
   created() {
     if (this.$route.query) {
       this.query = this.$route.query;
+      this.searResultReady = true;
     }
     console.log("query", this.query);
   },
