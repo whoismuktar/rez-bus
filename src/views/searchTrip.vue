@@ -1,193 +1,227 @@
 <template>
   <div class="search-trip">
     <div class="white pa-3">
-      <div class="app-container">
+      <div class="app-container def-section">
         <div class="search-box">
           <div class="way-trip">
-            <v-radio-group row>
-              <v-radio
-                label="Aller simple"
-                color="accent"
-                value="company"
-                class="selection-wrapper mb-0"
-              >
+            <v-radio-group v-model="tripMode" row>
+              <v-radio label="Aller simple" color="accent" value="oneway">
               </v-radio>
 
-              <v-radio
-                label="Aller-retour"
-                color="accent"
-                value="company"
-                class="selection-wrapper mb-0"
-              >
+              <v-radio label="Aller-retour" color="accent" value="returnWay">
               </v-radio>
             </v-radio-group>
           </div>
 
-          <v-row align="center">
-            <v-col cols="5">
-              <div class="d-flex position-relative">
-                <div>
-                  <div>de</div>
-                  <v-text-field
-                    v-model="query.from"
-                    dense
-                    outlined
-                    append-icon="swap_horiz"
-                    class="join-input-left route-from"
-                  >
-                    <template slot="prepend-inner-icon">
-                      <i class="material-icons-outlined"> power </i>
-                    </template>
-                  </v-text-field>
-                </div>
-
-                <div>
-                  <div>à</div>
-                  <v-text-field
-                    v-model="query.to"
-                    dense
-                    outlined
-                    prepend-inner-icon="location_on"
-                    class="join-input-last route-to"
-                  ></v-text-field>
-                </div>
-              </div>
-            </v-col>
-            <v-col cols="3">
-              <div>
-                <div>Départ</div>
-                <v-menu
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="auto"
-                >
-                  <template v-slot:activator="{ on, attrs }">
+          <v-form ref="searchTrip-form">
+            <v-row align="center">
+              <v-col cols="5">
+                <div class="d-flex position-relative">
+                  <div>
+                    <div>de</div>
                     <v-text-field
-                      :value="query.rideDate"
-                      placeholder="Pick a date"
-                      prepend-inner-icon="date_range"
-                      persistent-hint
+                      v-model="query.from"
                       dense
                       outlined
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="query.rideDate"
-                    :menu-props="{ offsetY: true }"
-                    :min="nowDate"
-                    scrollable
-                    color="primary"
-                    header-color="primary"
-                    event-color="blue"
-                  >
-                  </v-date-picker>
-                </v-menu>
-              </div>
-            </v-col>
-            <v-col cols="2" align-self="start">
-              <div>
-                <div>Passagers/vélos</div>
-                <v-menu
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  max-width="400"
-                  content-class="chooseDetails-menu"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      outlined
-                      append-inner-icon="location_on"
-                      class="
-                        parentWidth
-                        gen-button
-                        chooseDetails-btn
-                        justify-space-between
-                      "
-                      v-bind="attrs"
-                      v-on="on"
+                      prepend-inner-icon="location_on"
+                      append-icon="swap_horiz"
+                      class="join-input-left route-from"
                     >
-                      <span>
-                        {{ query.adult }} Adult, {{ query.children }} Enfants,
-                        {{ query.bike_slot }} Vélos</span
+                      <template slot="prepend-inner-icon">
+                        <i class="material-icons-outlined"> power </i>
+                      </template>
+                    </v-text-field>
+                  </div>
+
+                  <div>
+                    <div>à</div>
+                    <v-text-field
+                      v-model="query.to"
+                      dense
+                      outlined
+                      prepend-inner-icon="location_on"
+                      class="join-input-last route-to"
+                    ></v-text-field>
+                  </div>
+                </div>
+              </v-col>
+              <v-col cols="3" class="d-flex">
+                <div>
+                  <div>Départ</div>
+                  <v-menu
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        :value="query.rideDate"
+                        placeholder="Pick a date"
+                        prepend-inner-icon="date_range"
+                        persistent-hint
+                        dense
+                        outlined
+                        readonly
+                        :class="[
+                          tripMode == 'returnWay' ? 'join-input-left' : '',
+                        ]"
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="query.rideDate"
+                      :menu-props="{ offsetY: true }"
+                      :min="nowDate"
+                      scrollable
+                      color="primary"
+                      header-color="primary"
+                      event-color="blue"
+                    >
+                    </v-date-picker>
+                  </v-menu>
+                </div>
+
+                <div v-if="tripMode == 'returnWay'">
+                  <div>Départ</div>
+                  <v-menu
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        :value="query.rideDate"
+                        persistent-hint
+                        dense
+                        outlined
+                        readonly
+                        class="join-input-last"
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="query.rideDate"
+                      :menu-props="{ offsetY: true }"
+                      :min="nowDate"
+                      scrollable
+                      color="primary"
+                      header-color="primary"
+                      event-color="blue"
+                    >
+                    </v-date-picker>
+                  </v-menu>
+                </div>
+              </v-col>
+              <v-col cols="2" align-self="start">
+                <div>
+                  <div>Passagers/vélos</div>
+                  <v-menu
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    max-width="400"
+                    content-class="chooseDetails-menu"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        outlined
+                        append-inner-icon="location_on"
+                        class="
+                          parentWidth
+                          gen-button
+                          chooseDetails-btn
+                          justify-space-between
+                        "
+                        v-bind="attrs"
+                        v-on="on"
                       >
-                      <div class="text-right">
-                        <v-icon right>expand_more</v-icon>
-                      </div>
-                    </v-btn>
-                  </template>
-                  <div class="chooseDetails-board def-section mb-0">
-                    <div class="chooseDetails-layer">
-                      <div class="chooseDetails-text">
-                        <h2 class="app-title">Adultes</h2>
-                        <div>à partir de 16 ans</div>
-                      </div>
-                      <div class="chooseDetails-action">
-                        <v-btn depressed plain small :ripple="false">
-                          <v-icon>remove</v-icon>
-                        </v-btn>
-                        <span class="persons-qty">3</span>
-                        <v-btn depressed plain small :ripple="false">
-                          <v-icon>add</v-icon>
-                        </v-btn>
-                      </div>
-                    </div>
-
-                    <div class="chooseDetails-layer">
-                      <div class="chooseDetails-text">
-                        <h2 class="app-title">Enfants</h2>
-                        <div>de 0 à 15 ans</div>
-                      </div>
-                      <div class="chooseDetails-action">
-                        <v-btn depressed plain small :ripple="false">
-                          <v-icon>remove</v-icon>
-                        </v-btn>
-                        <span class="persons-qty">3</span>
-                        <v-btn depressed plain small :ripple="false">
-                          <v-icon>add</v-icon>
-                        </v-btn>
-                      </div>
-                    </div>
-
-                    <div class="chooseDetails-layer">
-                      <div class="chooseDetails-text">
-                        <h2 class="app-title">Vélos</h2>
-                        <div>
-                          Les vélos électriques ne sont pas autorisés dans les
-                          bus.
+                        <span>
+                          {{ query.adult }} Adult, {{ query.children }} Enfants,
+                          {{ query.bike_slot }} Vélos</span
+                        >
+                        <div class="text-right">
+                          <v-icon>expand_more</v-icon>
+                        </div>
+                      </v-btn>
+                    </template>
+                    <div class="chooseDetails-board def-section mb-0">
+                      <div class="chooseDetails-layer">
+                        <div class="chooseDetails-text">
+                          <h2 class="app-title">Adultes</h2>
+                          <div>à partir de 16 ans</div>
+                        </div>
+                        <div class="chooseDetails-action">
+                          <v-btn depressed plain small :ripple="false">
+                            <v-icon>remove</v-icon>
+                          </v-btn>
+                          <span class="persons-qty">3</span>
+                          <v-btn depressed plain small :ripple="false">
+                            <v-icon>add</v-icon>
+                          </v-btn>
                         </div>
                       </div>
-                      <div class="chooseDetails-action">
-                        <v-btn depressed plain small :ripple="false">
-                          <v-icon>remove</v-icon>
-                        </v-btn>
-                        <span class="persons-qty">1</span>
-                        <v-btn depressed plain small :ripple="false">
-                          <v-icon>add</v-icon>
-                        </v-btn>
+
+                      <div class="chooseDetails-layer">
+                        <div class="chooseDetails-text">
+                          <h2 class="app-title">Enfants</h2>
+                          <div>de 0 à 15 ans</div>
+                        </div>
+                        <div class="chooseDetails-action">
+                          <v-btn depressed plain small :ripple="false">
+                            <v-icon>remove</v-icon>
+                          </v-btn>
+                          <span class="persons-qty">3</span>
+                          <v-btn depressed plain small :ripple="false">
+                            <v-icon>add</v-icon>
+                          </v-btn>
+                        </div>
+                      </div>
+
+                      <div class="chooseDetails-layer">
+                        <div class="chooseDetails-text">
+                          <h2 class="app-title">Vélos</h2>
+                          <div>
+                            Les vélos électriques ne sont pas autorisés dans les
+                            bus.
+                          </div>
+                        </div>
+                        <div class="chooseDetails-action">
+                          <v-btn depressed plain small :ripple="false">
+                            <v-icon>remove</v-icon>
+                          </v-btn>
+                          <span class="persons-qty">1</span>
+                          <v-btn depressed plain small :ripple="false">
+                            <v-icon>add</v-icon>
+                          </v-btn>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </v-menu>
-              </div>
-            </v-col>
-            <v-col cols="2">
-              <div>
-                <v-btn depressed color="primary" class="gen-button"
-                  >Chercher</v-btn
-                >
-              </div>
-            </v-col>
-          </v-row>
+                  </v-menu>
+                </div>
+              </v-col>
+              <v-col cols="2">
+                <div>
+                  <v-btn
+                    depressed
+                    color="primary"
+                    class="gen-button"
+                    @click.prevent="searchRoute"
+                  >
+                    Chercher
+                  </v-btn>
+                </div>
+              </v-col>
+            </v-row>
+          </v-form>
         </div>
       </div>
     </div>
 
-    <div class="app-container">
+    <div v-if="searResultReady" class="app-container">
       <div class="searchResult">
         <v-row>
           <v-col cols="4">
@@ -544,7 +578,12 @@
 export default {
   data() {
     return {
-      query: {},
+      tripMode: "oneway",
+      searResultReady: false,
+      query: {
+        from: "Berlin",
+        to: "Munich",
+      },
       stations: [
         {
           start: "7:10",
@@ -603,6 +642,21 @@ export default {
     };
   },
   methods: {
+    searchRoute() {
+      // this.$router.push({ path: "search-trip", query: this.query });
+
+      const obj = this.query;
+      var str = "";
+      for (var key in obj) {
+        if (str != "") {
+          str += "&";
+        }
+        str += key + "=" + obj[key];
+      }
+
+      console.log(str);
+      this.$router.push("/search-trip?" + str).catch(() => {});
+    },
     selectAllFromStops() {
       this.fromStops.map((stop) => (stop.isActive = true));
     },
@@ -617,7 +671,9 @@ export default {
     },
   },
   created() {
-    this.query = this.$route.query;
+    if (this.$route.query) {
+      this.query = this.$route.query;
+    }
     console.log("query", this.query);
   },
 };

@@ -17,22 +17,19 @@
         </div>
         <v-form ref="registerForm">
           <div class="input-wrapper">
-            <div class="input-label">
-              Adresse mail <span class="asterisk">*</span>
-            </div>
+            <div class="input-label">Adresse mail ou numéro de téléphone</div>
             <v-text-field
               v-model="email"
               dense
               outlined
+              placeholder="xxx@gmail.com ou +226XXXXXX"
               hide-details="auto"
               :rules="[rules.email, rules.required]"
             ></v-text-field>
           </div>
 
           <div class="input-wrapper">
-            <div class="input-label">
-              Mot de passe <span class="asterisk">*</span>
-            </div>
+            <div class="input-label">Mot de passe</div>
             <v-text-field
               v-model="password"
               dense
@@ -45,7 +42,20 @@
             ></v-text-field>
           </div>
 
-          <div class="text-right">
+          <router-link to="/forgot-password">Mot de passe oubilé?</router-link>
+          <router-link to="/register">S’inscrire?</router-link>
+
+          <div class="d-flex align-center justify-space-between text-right">
+            <div class="input-wrapper d-flex align-center">
+              <v-checkbox
+                v-model="remember"
+                outlined
+                hide-details="auto"
+                class="noSpaceCheckbox"
+                :rules="[rules.required]"
+              ></v-checkbox>
+              <div class="input-label">Rester connecté</div>
+            </div>
             <v-btn
               depressed
               x-large
@@ -70,7 +80,9 @@ export default {
     return {
       email: "",
       password: "",
+      remember: false,
       show1: false,
+    //   ownRules: []
     };
   },
   methods: {

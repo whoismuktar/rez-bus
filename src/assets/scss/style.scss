@@ -104,7 +104,7 @@ hr.broken {
   margin: 0 auto;
 }
 .gen-button {
-    text-transform: capitalize;
+    text-transform: capitalize !important;
     letter-spacing: 0;
 }
 .no-Btn-bg::before {
