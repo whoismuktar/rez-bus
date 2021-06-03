@@ -1,5 +1,5 @@
 <template>
-  <div class="hero">
+  <div class="hero-comp">
     <div>
       <v-img
         alt="Bus Station"
