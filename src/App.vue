@@ -1,7 +1,7 @@
 <template>
   <v-app class="bodyBG">
     <nav-header />
-    <v-main class="bodyBG">
+    <v-main class="mainBody">
       <router-view />
     </v-main>
     <nav-footer />
