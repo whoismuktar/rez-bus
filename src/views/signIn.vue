@@ -19,12 +19,15 @@
           <div class="input-wrapper">
             <div class="input-label">Adresse mail ou numéro de téléphone</div>
             <v-text-field
-              v-model="email"
+              v-model="loginID"
               dense
               outlined
-              placeholder="xxx@gmail.com ou +226XXXXXX"
               hide-details="auto"
-              :rules="[rules.email, rules.required]"
+              placeholder="xxx@gmail.com ou +226XXXXXX"
+              :rules="[
+                rules.required,
+                loginID.charAt(0) == '+' ? rules.phoneNumber : rules.email,
+              ]"
             ></v-text-field>
           </div>
 
@@ -78,11 +81,10 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      email: "",
+      loginID: "",
       password: "",
       remember: false,
       show1: false,
-    //   ownRules: []
     };
   },
   methods: {

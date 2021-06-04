@@ -11,6 +11,10 @@ export default new Vuex.Store({
         required: (value) => !!value || "Required",
         min3: (value) => value.length >= 3 || "Min 3 characters",
         min4: (value) => value.length >= 4 || "Min 4 characters",
+        phoneNumber: (value) =>
+          !value ||
+          /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]{10,14}$/.test(value) ||
+          "Enter a valid international phone number",
         number: (value) => !value || /^[0-9]*$/.test(value) || "Invalid value",
         email: (value) =>
           !value ||

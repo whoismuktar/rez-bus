@@ -671,7 +671,10 @@ export default {
     },
   },
   created() {
-    if (this.$route.query) {
+    console.log("$route.query", this.$route.query);
+    const paramQueryLength = Object.keys(this.$route.query).length;
+    console.log("paramQueryLength", paramQueryLength);
+    if (paramQueryLength > 0) {
       this.query = this.$route.query;
       this.searResultReady = true;
     }
