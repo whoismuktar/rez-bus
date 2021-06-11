@@ -31,6 +31,11 @@
         Vous n'avez pas reçu l'email?
       </v-btn>
 
+      <em v-if="isEmailSent" class="secondary4--text">
+        Félicitations, un mail vient de vous être envoyé à l'adresse mail
+        renseigné !
+      </em>
+
       <div class="text-center my-5">
         <v-btn depressed color="primary" class="gen-button mr-2">Billet</v-btn>
         <v-btn outlined color="primary" class="gen-button mr-2">Facture</v-btn>
@@ -107,15 +112,21 @@
       content-class="no-box-shadow"
     >
       <div class="def-section text-center">
-        <div>
-          <b>Confirmez votre adresse mail</b>
-        </div>
-        <v-text-field
-          v-model="email"
-          outlined
-          class="centered-input"
-        ></v-text-field>
-        <v-btn color="primary" class="gen-button">Renvoyer</v-btn>
+        <v-form ref="NotReceivedEmailForm">
+          <div>
+            <b>Confirmez votre adresse mail</b>
+          </div>
+          <v-text-field
+            v-model="email"
+            outlined
+            class="centered-input"
+            :rules="[rules.email]"
+          ></v-text-field>
+
+          <v-btn color="primary" class="gen-button" @click="initSend">
+            Renvoyer
+          </v-btn>
+        </v-form>
       </div>
     </v-dialog>
   </div>
@@ -124,7 +135,26 @@
 <script>
 export default {
   data() {
-    return { modalActive: false, email: "user@email.com" };
+    return {
+      modalActive: false,
+      email: "user@email.com",
+      isEmailSent: false,
+      rules: {
+        email: (value) =>
+          !value ||
+          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
+          "Invalid E-mail",
+      },
+    };
+  },
+  methods: {
+    initSend() {
+      const validation = this.$refs.NotReceivedEmailForm.validate();
+      if (validation) {
+        this.modalActive = false;
+        this.isEmailSent = true;
+      }
+    },
   },
 };
 </script>
