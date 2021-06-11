@@ -5,15 +5,15 @@
         <div class="search-box">
           <div class="way-trip">
             <v-radio-group v-model="tripMode" row>
-              <v-radio label="Aller simple" color="accent" value="oneway">
+              <v-radio label="Aller simple" color="secondary" value="oneway">
               </v-radio>
 
-              <v-radio label="Aller-retour" color="accent" value="returnWay">
+              <v-radio label="Aller-retour" color="secondary" value="returnWay">
               </v-radio>
             </v-radio-group>
           </div>
 
-          <v-form ref="searchTrip-form">
+          <v-form ref="searchTripForm">
             <v-row align="center">
               <v-col cols="5">
                 <div class="d-flex position-relative">
@@ -26,6 +26,7 @@
                       prepend-inner-icon="location_on"
                       append-icon="swap_horiz"
                       class="join-input-left route-from"
+                      :rules="[rules.required]"
                     >
                       <template slot="prepend-inner-icon">
                         <i class="material-icons-outlined"> power </i>
@@ -41,6 +42,7 @@
                       outlined
                       prepend-inner-icon="location_on"
                       class="join-input-last route-to"
+                      :rules="[rules.required]"
                     ></v-text-field>
                   </div>
                 </div>
@@ -68,6 +70,7 @@
                         ]"
                         v-bind="attrs"
                         v-on="on"
+                        :rules="[rules.required]"
                       ></v-text-field>
                     </template>
                     <v-date-picker
@@ -94,6 +97,8 @@
                     <template v-slot:activator="{ on, attrs }">
                       <v-text-field
                         :value="query.rideDate"
+                        placeholder="Pick a date"
+                        prepend-inner-icon="date_range"
                         persistent-hint
                         dense
                         outlined
@@ -101,6 +106,7 @@
                         class="join-input-last"
                         v-bind="attrs"
                         v-on="on"
+                        :rules="[rules.required]"
                       ></v-text-field>
                     </template>
                     <v-date-picker
@@ -155,11 +161,24 @@
                           <div>à partir de 16 ans</div>
                         </div>
                         <div class="chooseDetails-action">
-                          <v-btn depressed plain small :ripple="false">
+                          <v-btn
+                            depressed
+                            plain
+                            small
+                            :ripple="false"
+                            @click="query.adult > 0 ? query.adult-- : ''"
+                          >
                             <v-icon>remove</v-icon>
                           </v-btn>
-                          <span class="persons-qty">3</span>
-                          <v-btn depressed plain small :ripple="false">
+                          <span class="persons-qty">{{ query.adult }}</span>
+                          <v-btn
+                            width="20"
+                            depressed
+                            plain
+                            small
+                            :ripple="false"
+                            @click="query.adult++"
+                          >
                             <v-icon>add</v-icon>
                           </v-btn>
                         </div>
@@ -171,11 +190,24 @@
                           <div>de 0 à 15 ans</div>
                         </div>
                         <div class="chooseDetails-action">
-                          <v-btn depressed plain small :ripple="false">
+                          <v-btn
+                            depressed
+                            plain
+                            small
+                            :ripple="false"
+                            @click="query.children > 0 ? query.children-- : ''"
+                          >
                             <v-icon>remove</v-icon>
                           </v-btn>
-                          <span class="persons-qty">3</span>
-                          <v-btn depressed plain small :ripple="false">
+                          <span class="persons-qty">{{ query.children }}</span>
+                          <v-btn
+                            width="20"
+                            depressed
+                            plain
+                            small
+                            :ripple="false"
+                            @click="query.children++"
+                          >
                             <v-icon>add</v-icon>
                           </v-btn>
                         </div>
@@ -190,11 +222,26 @@
                           </div>
                         </div>
                         <div class="chooseDetails-action">
-                          <v-btn depressed plain small :ripple="false">
+                          <v-btn
+                            depressed
+                            plain
+                            small
+                            :ripple="false"
+                            @click="
+                              query.bike_slot > 0 ? query.bike_slot-- : ''
+                            "
+                          >
                             <v-icon>remove</v-icon>
                           </v-btn>
-                          <span class="persons-qty">1</span>
-                          <v-btn depressed plain small :ripple="false">
+                          <span class="persons-qty">{{ query.bike_slot }}</span>
+                          <v-btn
+                            width="20"
+                            depressed
+                            plain
+                            small
+                            :ripple="false"
+                            @click="query.bike_slot++"
+                          >
                             <v-icon>add</v-icon>
                           </v-btn>
                         </div>
@@ -262,27 +309,22 @@
                     <div class="d-flex justify-space-between">
                       <div>
                         {{
-                          new Date(query.rideDate).toDateString().split(" ")[0]
-                        }}.,
-                        {{
-                          fromRange[0]
-                            .toString()
-                            .replace(/(\d{2})(\d{2})/, "$1:$2")
-                        }}
+                          new Date(timeStamps.from)
+                            .toDateString()
+                            .split(" ")[0]
+                        }}, {{ getDepartTimeStart }}
                       </div>
                       <div>
                         {{
-                          fromRange[1]
-                            .toString()
-                            .replace(/(\d{2})(\d{2})/, "$1:$2")
-                        }}
+                          new Date(timeStamps.to).toDateString().split(" ")[0]
+                        }}, {{ getDepartTimeEnd }}
                       </div>
                     </div>
                     <v-range-slider
-                      v-model="fromRange"
-                      step="30"
-                      :min="minFromTime"
-                      :max="maxFromTime"
+                      v-model="departTime"
+                      step="1800000"
+                      :min="timeStamps.from"
+                      :max="timeStamps.to"
                     ></v-range-slider>
                   </div>
 
@@ -293,27 +335,22 @@
                     <div class="d-flex justify-space-between">
                       <div>
                         {{
-                          new Date(query.rideDate).toDateString().split(" ")[0]
-                        }}.,
-                        {{
-                          fromRange[0]
-                            .toString()
-                            .replace(/(\d{2})(\d{2})/, "$1:$2")
-                        }}
+                          new Date(timeStamps.from)
+                            .toDateString()
+                            .split(" ")[0]
+                        }}, {{ getArrivalTimeStart }}
                       </div>
                       <div>
                         {{
-                          fromRange[1]
-                            .toString()
-                            .replace(/(\d{2})(\d{2})/, "$1:$2")
-                        }}
+                          new Date(timeStamps.to).toDateString().split(" ")[0]
+                        }}, {{ getArrivalTimeEnd }}
                       </div>
                     </div>
                     <v-range-slider
-                      v-model="fromRange"
-                      step="30"
-                      :min="minFromTime"
-                      :max="maxFromTime"
+                      v-model="arrivalTime"
+                      step="1800000"
+                      :min="timeStamps.from"
+                      :max="timeStamps.to"
                     ></v-range-slider>
                   </div>
                 </div>
@@ -426,18 +463,20 @@
               <div>
                 <div>Trier selon</div>
                 <v-select
+                  v-model="sortBy"
                   outlined
                   dense
                   :menu-props="{ offsetY: true }"
                   background-color="white"
-                  :items="sortBy"
-                  item-text="text"
+                  :items="sortMenu"
                   item-value="sortBy"
+                  item-text="text"
                 ></v-select>
               </div>
             </div>
 
             <div class="def-section py-3 d-flex align-center">
+              <!-- <pre>sortedStations: {{ sortedStations }}</pre> -->
               <i class="material-icons-outlined mr-1"> info </i>
               <span
                 >Veuillez consulter les
@@ -464,7 +503,7 @@
             </div>
 
             <div
-              v-for="(station, index) in stations"
+              v-for="(station, index) in sortedStations"
               :key="index"
               class="def-section searchResult-tab"
             >
@@ -476,7 +515,7 @@
                         {{ station.start }}
                       </b>
                       <div class="time-separator">
-                        <span>{{ station.duration }}</span>
+                        <span>{{ station.duration }}h</span>
                       </div>
                       <b class="searchResult-tab-end ml-2">
                         {{ station.end }}
@@ -583,11 +622,14 @@ export default {
       query: {
         from: "Berlin",
         to: "Munich",
+        adult: 0,
+        children: 0,
+        bike_slot: 0,
       },
       stations: [
         {
           start: "7:10",
-          duration: "9:10h",
+          duration: "11:10",
           end: "10:10",
           startStops: ["start1", "start2", "start3", "start4"],
           endStops: ["Dest1", "Dest2", "Dest3", "Dest4"],
@@ -598,7 +640,7 @@ export default {
         },
         {
           start: "9:10",
-          duration: "11:10h",
+          duration: "9:10",
           end: "8:10",
           startStops: ["start1", "start2", "start3", "start4"],
           endStops: ["Dest1", "Dest2", "Dest3", "Dest4"],
@@ -609,11 +651,12 @@ export default {
         },
       ],
       searchResult: {},
-      fromRange: [0, 1300],
       minFromTime: 0,
       maxFromTime: 1300,
       minToTime: 0,
       maxToTime: 0,
+      departTime: [],
+      arrivalTime: [],
       nowDate: new Date().toISOString().slice(0, 10),
       fromStops: [
         { isActive: true, ext: "a", count: 15 },
@@ -627,9 +670,10 @@ export default {
         { isActive: false, ext: "c", count: 44 },
         { isActive: false, ext: "d", count: 27 },
       ],
-      sortBy: [
-        { sortBy: "departure", text: "Prix (le plus bas)" },
-        { sortBy: "price", text: "Départ (le plus tôt)" },
+      sortBy: "",
+      sortMenu: [
+        { sortBy: "fare", text: "Prix (le plus bas)" },
+        { sortBy: "departure", text: "Départ (le plus tôt)" },
         { sortBy: "duration", text: "Durée (la moins longue)" },
       ],
       safetyRules: [
@@ -639,23 +683,30 @@ export default {
         "Les passagers doivent porter un masque",
         "Veuillez rester assis lorsque vous êtes à bord",
       ],
+      rules: {
+        required: (value) => !!value || "Required",
+      },
     };
   },
   methods: {
     searchRoute() {
-      // this.$router.push({ path: "search-trip", query: this.query });
+      const validation = this.$refs.searchTripForm.validate();
 
-      const obj = this.query;
-      var str = "";
-      for (var key in obj) {
-        if (str != "") {
-          str += "&";
+      if (validation) {
+        // this.$router.push({ path: "search-trip", query: this.query });
+
+        const obj = this.query;
+        var str = "";
+        for (var key in obj) {
+          if (str != "") {
+            str += "&";
+          }
+          str += key + "=" + obj[key];
         }
-        str += key + "=" + obj[key];
-      }
 
-      console.log(str);
-      window.location.href = "/search-trip?" + str;
+        console.log(str);
+        window.location.href = "/search-trip?" + str;
+      }
     },
     selectAllFromStops() {
       this.fromStops.map((stop) => (stop.isActive = true));
@@ -670,15 +721,125 @@ export default {
       this.toStops.map((stop) => (stop.isActive = false));
     },
   },
+  computed: {
+    sortedStations() {
+      let stations = [];
+      stations = this.stations;
+      let sortBy = this.sortBy;
+
+      if (this.searResultReady) {
+        console.log("sortBy", sortBy);
+        return stations.sort((a, b) => {
+          console.log("value:", typeof a[sortBy]);
+
+          if (sortBy == "duration") {
+            let getVal = (str) => {
+              console.log(str.split(":")[0]);
+              return str.split(":")[0];
+            };
+            console.log("stations", stations);
+            return getVal(a[sortBy]) - getVal(b[sortBy]);
+          } else {
+            return a[sortBy] - b[sortBy];
+          }
+        });
+      } else {
+        return [];
+      }
+      // return stations;
+    },
+    timeStamps() {
+      let timeStamps = {};
+      timeStamps.from = Date.parse(this.query.rideDate);
+      timeStamps.to = new Date(timeStamps.from);
+      timeStamps.to.setHours(timeStamps.to.getHours() + 24); // Add 24hrs from destination
+
+      timeStamps.to = Date.parse(timeStamps.to);
+
+      console.log("timeStamps.to", timeStamps.to);
+
+      return timeStamps;
+    },
+    getDepartTimeStart() {
+      let timeStamp = this.departTime[0];
+      let hr = new Date(timeStamp).getHours();
+      let min = new Date(timeStamp).getMinutes();
+
+      if (hr.toString().length == 1) {
+        hr = `0${hr}`;
+      }
+      if (min.toString().length == 1) {
+        min = `0${min}`;
+      }
+
+      const final = hr + ":" + min;
+      return final;
+    },
+    getDepartTimeEnd() {
+      let timeStamp = this.departTime[1];
+      let hr = new Date(timeStamp).getHours();
+      let min = new Date(timeStamp).getMinutes();
+
+      if (hr.toString().length == 1) {
+        hr = `0${hr}`;
+      }
+      if (min.toString().length == 1) {
+        min = `0${min}`;
+      }
+
+      const final = hr + ":" + min;
+      return final;
+    },
+    getArrivalTimeStart() {
+      let timeStamp = this.arrivalTime[0];
+      let hr = new Date(timeStamp).getHours();
+      let min = new Date(timeStamp).getMinutes();
+
+      if (hr.toString().length == 1) {
+        hr = `0${hr}`;
+      }
+      if (min.toString().length == 1) {
+        min = `0${min}`;
+      }
+
+      const final = hr + ":" + min;
+      return final;
+    },
+    getArrivalTimeEnd() {
+      let timeStamp = this.arrivalTime[1];
+      let hr = new Date(timeStamp).getHours();
+      let min = new Date(timeStamp).getMinutes();
+
+      if (hr.toString().length == 1) {
+        hr = `0${hr}`;
+      }
+      if (min.toString().length == 1) {
+        min = `0${min}`;
+      }
+
+      const final = hr + ":" + min;
+      return final;
+    },
+  },
   created() {
     console.log("$route.query", this.$route.query);
     const paramQueryLength = Object.keys(this.$route.query).length;
     console.log("paramQueryLength", paramQueryLength);
+
     if (paramQueryLength > 0) {
       this.query = this.$route.query;
       this.searResultReady = true;
+
+      this.departTime[0] = this.timeStamps.from;
+      this.departTime[1] = this.timeStamps.to;
+
+      this.arrivalTime[0] = this.timeStamps.from;
+      this.arrivalTime[1] = this.timeStamps.to;
     }
     console.log("query", this.query);
+
+    // set default sort
+    this.sortBy = this.sortMenu[0].sortBy;
   },
 };
 </script>
