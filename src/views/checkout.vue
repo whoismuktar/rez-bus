@@ -108,15 +108,9 @@
               </div>
             </div>
 
-            <div
-              class="selection-wrapper"
-              @click="
-                luggaageActive = true;
-                modalActive = true;
-              "
-            >
-              <div class="d-flex">
-                <v-icon large>airline_seat_recline_normal</v-icon>
+            <div class="selection-wrapper pa-0" @click="luggaageActive = true">
+              <!-- <div class="d-flex">
+                <v-icon large>luggage</v-icon>
                 <div class="ml-3">
                   <h2 class="app-title">Bagage supplémentaire</h2>
                   <p>à partir de 3,99 €</p>
@@ -125,20 +119,100 @@
                 <v-spacer></v-spacer>
 
                 <v-icon>chevron_right</v-icon>
-              </div>
-            </div>
+              </div> -->
 
-            <div class="selection-wrapper d-flex" @click="modalActive">
-              <v-checkbox class="noSpaceCheckbox x1-5transform"></v-checkbox>
-              <div class="d-flex align-start">
-                <v-icon large>mdi-leaf</v-icon>
-                <div class="mt-n1 ml-3">
-                  <h2 class="app-title">Bagage supplémentaire</h2>
-                  <p>à partir de 3,99 €</p>
-                </div>
-              </div>
-              <v-spacer></v-spacer>
-              <v-icon>chevron_right</v-icon>
+              <!--  -->
+              <v-expansion-panels flat>
+                <v-expansion-panel>
+                  <v-expansion-panel-header>
+                    <div class="d-flex">
+                      <v-icon large>luggage</v-icon>
+                      <div class="ml-3">
+                        <h2 class="app-title mb-2">Bagage supplémentaire</h2>
+                        <p>à partir de 3,99 €</p>
+                      </div>
+
+                      <v-spacer></v-spacer>
+                    </div>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <hr class="mb-5" />
+
+                    <div class="d-flex mb-5">
+                      <div class="d-flex">
+                        <div class="d-flex mr-3">
+                          <v-icon>backpack</v-icon>
+                          <v-icon class="tiny ml-n2 mb-n4">backpack</v-icon>
+                        </div>
+
+                        <div>
+                          <div>
+                            1 Bagage à main + 1 Bagage en soute par personne
+                          </div>
+                          <div>7 kg · 42×30×18 cm | 20 kg · 80×50×30 cm</div>
+                        </div>
+                      </div>
+
+                      <v-spacer></v-spacer>
+
+                      <div
+                        class="primary radius5 pa-2 white--text"
+                        style="height: fit-content"
+                      >
+                        Gratuit
+                      </div>
+                    </div>
+
+                    <div class="d-flex">
+                      <div class="d-flex align-center justify-center">
+                        <div class="d-flex mr-3">
+                          <v-icon>backpack</v-icon>
+                        </div>
+
+                        <v-spacer></v-spacer>
+
+                        <div>
+                          <div>Bagage supplémentaire</div>
+                          <div>20 kg - 80×50×30 cm</div>
+                        </div>
+                      </div>
+
+                      <div class="chooseDetails-action">
+                        <v-btn
+                          width="20"
+                          depressed
+                          plain
+                          small
+                          class="borderMe"
+                          :ripple="false"
+                          :disabled="extraBags <= 0"
+                          @click="extraBags > 0 ? extraBags-- : ''"
+                        >
+                          <v-icon>remove</v-icon>
+                        </v-btn>
+                        <span class="persons-qty mx-2">{{ extraBags }}</span>
+                        <v-btn
+                          width="20"
+                          depressed
+                          plain
+                          small
+                          class="borderMe"
+                          :ripple="false"
+                          :disabled="extraBags == getTotalPassengers"
+                          @click="extraBags++"
+                        >
+                          <v-icon>add</v-icon>
+                        </v-btn>
+                      </div>
+
+                      <v-spacer></v-spacer>
+                      <div>
+                        {{ eachBagCost }}
+                      </div>
+                    </div>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
             </div>
           </div>
         </div>
@@ -194,10 +268,10 @@
               <div class="sectionTitle">Paiement</div>
             </div>
 
-            <v-radio-group>
+            <v-radio-group v-model="paymentType">
               <v-radio
                 color="accent"
-                value="company"
+                value="card"
                 class="selection-wrapper mb-0"
               >
                 <template slot="label">
@@ -208,10 +282,71 @@
                   <div class="ml-2">Carte de crédit</div>
                 </template>
               </v-radio>
-              <span class="mx-4"></span>
+
+              <div v-if="paymentType == 'card'" class="card-holder py-4">
+                <div class="ml-3 centerWidth50">
+                  <div class="card-layer">
+                    <div class="card-label">Numéro de la carte</div>
+                    <v-text-field
+                      v-model="card.number"
+                      placeholder="1234 5678 9012 3456"
+                      dense
+                      outlined
+                      hide-details="auto"
+                      class="contact-input number"
+                      :rules="[rules.required, rules.number]"
+                    ></v-text-field>
+                  </div>
+
+                  <v-row class="card-layer">
+                    <v-col cols="6" class="py-0">
+                      <div class="card-label">Date d'expiration</div>
+                      <v-text-field
+                        v-model="card.exp"
+                        placeholder="01/12"
+                        dense
+                        outlined
+                        hide-details="auto"
+                        class="contact-input exp"
+                        :rules="[rules.required, ownRules.exp]"
+                      ></v-text-field>
+                    </v-col>
+
+                    <!-- <span class="mx-2"></span> -->
+                    <!-- <v-spacer></v-spacer> -->
+
+                    <v-col cols="6" class="py-0">
+                      <div class="card-label">CVC/CVV</div>
+                      <v-text-field
+                        v-model="card.cvv"
+                        placeholder="123"
+                        dense
+                        outlined
+                        hide-details="auto"
+                        class="contact-input cvv"
+                        :rules="[rules.required, rules.number]"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+
+                  <div class="card-layer">
+                    <div class="card-label">Nom sur la carte</div>
+                    <v-text-field
+                      v-model="card.name"
+                      placeholder="John Memphis"
+                      dense
+                      outlined
+                      hide-details="auto"
+                      class="contact-input name"
+                      :rules="[rules.required, ownRules.fullName]"
+                    ></v-text-field>
+                  </div>
+                </div>
+              </div>
+
               <v-radio
                 color="accent"
-                value="person"
+                value="paypal"
                 class="selection-wrapper mb-0"
               >
                 <template slot="label">
@@ -267,6 +402,15 @@
               </span>
             </div>
             <b>{{ getTotalCost }} €</b>
+          </div>
+
+          <div class="d-flex justify-space-between">
+            <div>
+              <span v-if="extraBags > 0">
+                {{ extraBags }} Bagage(s) supplémentaire(s)
+              </span>
+            </div>
+            <b>{{ extraBags * eachBagCost }} €</b>
           </div>
 
           <hr class="my-3" />
@@ -537,6 +681,7 @@
                       )"
                       :key="index"
                       class="seat-wrapper"
+                      @click="initSelection(seat.id)"
                     >
                       <div
                         v-if="seat.status == 'cancelled'"
@@ -756,6 +901,15 @@ export default {
       reservationDone: false,
       optionsActive: false,
       luggaageActive: false,
+      extraBags: 0,
+      eachBagCost: 40,
+      paymentType: "",
+      card: {
+        number: "",
+        exp: "",
+        cvv: "",
+        name: "",
+      },
       couponReady: false,
       nom: "",
       prenom: "",
@@ -766,6 +920,16 @@ export default {
       agree: false,
       show1: false,
       show2: false,
+      ownRules: {
+        exp: (value) =>
+          !value ||
+          /^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/.test(value) ||
+          "invalid expiry date",
+        fullName: (value) =>
+          !value ||
+          /(\w+)(?:\s[^\s]+)?\s(\w+).*/.test(value) ||
+          "invalid full name",
+      },
     };
   },
   methods: {
@@ -855,7 +1019,12 @@ export default {
       return total.toFixed(2) || 0;
     },
     getGrandTotal() {
-      return parseFloat(this.getTotalCost) + parseFloat(this.queryData.fare);
+      const extraBagCost = this.extraBags * this.eachBagCost || 0;
+      return (
+        extraBagCost +
+        parseFloat(this.getTotalCost) +
+        parseFloat(this.queryData.fare)
+      );
     },
     getSeletedSeatNames() {
       let seats = this.reservedSeats.map((seat) => seat.id);
@@ -1011,5 +1180,12 @@ export default {
   width: 100%;
   box-shadow: 0px -2px 7px -1px rgb(0 0 0 / 37%);
   padding: 20px;
+}
+.card-holder {
+  border-left: 1px solid var(--v-borderLine-base);
+  border-right: 1px solid var(--v-borderLine-base);
+}
+.card-layer {
+  margin-bottom: 20px !important;
 }
 </style>
