@@ -291,7 +291,12 @@
                 class="coupon-input mr-1"
                 @input="couponToUpperCase"
               ></v-text-field>
-              <v-btn depressed outlined color="primary" class="gen-button">
+              <v-btn
+                depressed
+                outlined
+                color="primary"
+                class="coupon-input gen-button"
+              >
                 Valider
               </v-btn>
             </div>
