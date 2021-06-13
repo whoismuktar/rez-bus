@@ -4,6 +4,9 @@
       <v-col cols="8">
         <div class="retour">Retour</div>
 
+        <pre>{{ queryData }}</pre>
+        <pre>{{ passengersData }}</pre>
+
         <!-- Passengers -->
         <div class="def-section">
           <div class="passengers">
@@ -13,32 +16,84 @@
             </div>
 
             <v-row
-              v-for="(passenger, index) in getTotalPassengers"
+              v-for="(passenger, index) in passengersData"
               :key="index"
+              align="end"
             >
-              <v-col cols="6">
-                <div class="input-wrapper">
-                  <div class="input-label">Nom</div>
-                  <v-text-field
-                    v-model="lastName"
-                    dense
-                    outlined
-                    hide-details
-                    :rules="[rules.required, rules.min3]"
-                  ></v-text-field></div
-              ></v-col>
-
-              <v-col cols="6">
+              <v-col cols="6" class="py-0">
+                <b>
+                  <span>{{ index + 1 }}.</span>
+                  <span
+                    v-if="passenger.type == 'adult'"
+                    class="text-capitalize"
+                  >
+                    {{ passenger.type }}
+                  </span>
+                  <span
+                    v-if="passenger.type == 'children'"
+                    class="text-capitalize"
+                  >
+                    Enfant
+                  </span>
+                </b>
                 <div class="input-wrapper">
                   <div class="input-label">Prénom</div>
                   <v-text-field
-                    v-model="firstName"
+                    v-model="passenger.firstName"
                     dense
                     outlined
-                    hide-details
-                    :rules="[rules.required, rules.min4]"
+                    hide-details="auto"
+                    :rules="[rules.required]"
                   ></v-text-field></div
               ></v-col>
+
+              <v-col cols="6" class="py-0">
+                <div class="input-wrapper">
+                  <div class="input-label">Nom</div>
+                  <v-text-field
+                    v-model="passenger.lastName"
+                    dense
+                    outlined
+                    hide-details="auto"
+                    :rules="[rules.required]"
+                  ></v-text-field>
+                </div>
+              </v-col>
+
+              <v-col v-if="passenger.type == 'children'" cols="5" class="py-0">
+                <div>
+                  <v-menu
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        :value="passenger.dob"
+                        label="Date de naissanceDate de naissance"
+                        prepend-inner-icon="date_range"
+                        persistent-hint
+                        dense
+                        outlined
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                        :rules="[rules.required]"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="passenger.dob"
+                      :menu-props="{ offsetY: true }"
+                      scrollable
+                      color="primary"
+                      header-color="primary"
+                      event-color="blue"
+                    >
+                    </v-date-picker>
+                  </v-menu>
+                </div>
+              </v-col>
             </v-row>
           </div>
         </div>
@@ -109,19 +164,6 @@
             </div>
 
             <div class="selection-wrapper pa-0" @click="luggaageActive = true">
-              <!-- <div class="d-flex">
-                <v-icon large>luggage</v-icon>
-                <div class="ml-3">
-                  <h2 class="app-title">Bagage supplémentaire</h2>
-                  <p>à partir de 3,99 €</p>
-                </div>
-
-                <v-spacer></v-spacer>
-
-                <v-icon>chevron_right</v-icon>
-              </div> -->
-
-              <!--  -->
               <v-expansion-panels flat>
                 <v-expansion-panel>
                   <v-expansion-panel-header>
@@ -233,8 +275,8 @@
                     v-model="email"
                     dense
                     outlined
-                    hide-details
-                    :rules="[rules.required, rules.min3]"
+                    hide-details="auto"
+                    :rules="[rules.required]"
                   ></v-text-field></div
               ></v-col>
 
@@ -311,10 +353,6 @@
                         :rules="[rules.required, ownRules.exp]"
                       ></v-text-field>
                     </v-col>
-
-                    <!-- <span class="mx-2"></span> -->
-                    <!-- <v-spacer></v-spacer> -->
-
                     <v-col cols="6" class="py-0">
                       <div class="card-label">CVC/CVV</div>
                       <v-text-field
@@ -405,7 +443,7 @@
                 , {{ queryData.children }} Enfants
               </span>
             </div>
-            <b>{{ queryData.fare }} €</b>
+            <b>{{ queryData.station.fare }} €</b>
           </div>
 
           <div class="d-flex justify-space-between">
@@ -479,8 +517,6 @@
               <router-link to="#">transport</router-link>
             </div>
           </div>
-
-          <!-- <div>Vous devez acceptez les conditions générales de vente</div> -->
 
           <v-btn depressed color="primary gen-button parentWidth">
             Procéder au paiement
@@ -629,15 +665,6 @@
                   <div class="seat-index">D</div>
                 </div>
 
-                <!-- <pre>{{ getTotalCost }}</pre> -->
-                <!-- <pre>{{ reservedSeats }}</pre> -->
-                <!-- <pre>{{ seats }}</pre> -->
-                <!-- <pre>{{ calcSeats }}</pre> -->
-                <!-- seats: {{ seats.length }}
-                <br />
-                getCurrentSelection: {{ getCurrentSelection }}
-                <br />
-                getTotalPassengers: {{ getTotalPassengers }} -->
                 <div class="bus-diagram-mapping d-flex">
                   <div
                     class="left-mapping d-flex justify-space-between flex-wrap"
@@ -892,16 +919,16 @@ export default {
   data() {
     return {
       modalActive: false,
-      // queryData: null,
-      queryData: {
-        from: "Berlin",
-        to: "Munich",
-        adult: "2",
-        children: "2",
-        bike_slot: "0",
-        fare: 90,
-        rideDate: "2021-06-16",
-      },
+      queryData: null,
+      // queryData: {
+      //   from: "Berlin",
+      //   to: "Munich",
+      //   adult: "2",
+      //   children: "2",
+      //   bike_slot: "0",
+      //   fare: 90,
+      //   rideDate: "2021-06-16",
+      // },
       seats: [
         {
           status: "cancelled",
@@ -1048,6 +1075,8 @@ export default {
           category: "siège confort",
         },
       ],
+      childMinAge: new Date().toISOString().slice(0, 10),
+      passengersData: [],
       reservedSeats: [],
       invoiceActive: false,
       invoice: {
@@ -1134,6 +1163,20 @@ export default {
       this.reservationActive = false;
       this.reservationDone = true;
     },
+    gatherPassengersData() {
+      const adult = this.queryData.adult;
+      const children = this.queryData.children;
+
+      for (let i = 0; i < adult; i++) {
+        const item = { firstName: "", lastName: "", type: "adult" };
+        this.passengersData.push(item);
+      }
+
+      for (let i = 0; i < children; i++) {
+        const item = { firstName: "", lastName: "", type: "children", dob: "" };
+        this.passengersData.push(item);
+      }
+    },
   },
   watch: {
     invoiceActive(val) {
@@ -1152,11 +1195,13 @@ export default {
     },
   },
   created() {
-    // this.queryData = this.$route.params.data;
+    this.queryData = this.$route.params.data;
     if (this.queryData == null) {
-      // alert("Please select trips");
-      // this.$router.push("/search-trip");
+      alert("Please select trips");
+      this.$router.push("/search-trip");
+      // this.gatherPassengersData();
     }
+    this.gatherPassengersData();
   },
   computed: {
     ...mapGetters(["rules", "countryByName"]),
@@ -1164,6 +1209,13 @@ export default {
       console.log(this.queryData);
       return parseInt(this.queryData.adult) + parseInt(this.queryData.children);
     },
+    // getPassengers() {
+    //   let passengers = [];
+    //   passengers.type;
+    //   passengers.map((passenger)=> {pasereturn passenger})
+    //   parseInt(this.queryData.adult) + parseInt(this.queryData.children);
+    //   return passengers;
+    // },
     getCurrentSelection: {
       cache: false,
       get() {
@@ -1188,7 +1240,6 @@ export default {
 
       let total = totalArr.reduce(reducer, 0);
 
-      console.log(total);
       return total.toFixed(2) || 0;
     },
     getGrandTotal() {
@@ -1196,7 +1247,7 @@ export default {
       return (
         extraBagCost +
         parseFloat(this.getTotalCost) +
-        parseFloat(this.queryData.fare)
+        parseFloat(this.queryData.station.fare)
       );
     },
     getSeletedSeatNames() {
