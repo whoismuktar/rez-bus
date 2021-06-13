@@ -20,7 +20,7 @@
                 <div class="input-wrapper">
                   <div class="input-label">Nom</div>
                   <v-text-field
-                    v-model="nom"
+                    v-model="lastName"
                     dense
                     outlined
                     hide-details
@@ -32,7 +32,7 @@
                 <div class="input-wrapper">
                   <div class="input-label">Prénom</div>
                   <v-text-field
-                    v-model="prenom"
+                    v-model="firstName"
                     dense
                     outlined
                     hide-details
@@ -230,7 +230,7 @@
                 <div class="input-wrapper">
                   <div class="input-label">E-mail</div>
                   <v-text-field
-                    v-model="nom"
+                    v-model="email"
                     dense
                     outlined
                     hide-details
@@ -793,8 +793,8 @@
                 label="Prénom"
                 dense
                 outlined
-                hide-details
-                :rules="[rules.required, rules.min4]"
+                hide-details="auto"
+                :rules="[rules.required]"
               ></v-text-field>
             </v-col>
 
@@ -804,8 +804,8 @@
                 label="Nom de famille"
                 dense
                 outlined
-                hide-details
-                :rules="[rules.required, rules.min4]"
+                hide-details="auto"
+                :rules="[rules.required]"
               ></v-text-field>
             </v-col>
 
@@ -815,7 +815,7 @@
                 label="Informations d'adresse complémentaires"
                 dense
                 outlined
-                hide-details
+                hide-details="auto"
                 :rules="[rules.required]"
               ></v-text-field>
             </v-col>
@@ -826,7 +826,7 @@
                 label="Rue + n°"
                 dense
                 outlined
-                hide-details
+                hide-details="auto"
                 :rules="[rules.required]"
               ></v-text-field>
             </v-col>
@@ -837,7 +837,7 @@
                 label="Cose Postal"
                 dense
                 outlined
-                hide-details
+                hide-details="auto"
                 :rules="[rules.required]"
               ></v-text-field>
             </v-col>
@@ -848,7 +848,7 @@
                 label="Ville"
                 dense
                 outlined
-                hide-details
+                hide-details="auto"
                 :rules="[rules.required]"
               ></v-text-field>
             </v-col>
@@ -860,10 +860,7 @@
                 outlined
                 dense
                 :menu-props="{ offsetY: true }"
-                background-color="white"
-                :items="sortMenu"
-                item-value="sortBy"
-                item-text="text"
+                :items="countryByName"
               ></v-select>
             </v-col>
           </v-row>
@@ -894,7 +891,7 @@ export default {
   },
   data() {
     return {
-      modalActive: !false,
+      modalActive: false,
       // queryData: null,
       queryData: {
         from: "Berlin",
@@ -1052,7 +1049,7 @@ export default {
         },
       ],
       reservedSeats: [],
-      invoiceActive: !false,
+      invoiceActive: false,
       invoice: {
         type: "",
         title: "",
@@ -1071,8 +1068,8 @@ export default {
         name: "",
       },
       couponReady: false,
-      nom: "",
-      prenom: "",
+      lastName: "",
+      firstName: "",
       email: "",
       tel: "",
       password: "",
@@ -1162,7 +1159,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["rules"]),
+    ...mapGetters(["rules", "countryByName"]),
     getTotalPassengers() {
       console.log(this.queryData);
       return parseInt(this.queryData.adult) + parseInt(this.queryData.children);
