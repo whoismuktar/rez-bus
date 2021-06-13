@@ -352,16 +352,29 @@
                 <template slot="label">
                   <v-img src="@/assets/img/paypal.svg" max-width="40"></v-img>
                   <div class="ml-2">Paypal</div>
-                </template></v-radio
+                </template>
+              </v-radio>
+
+              <v-radio
+                color="accent"
+                value="cash"
+                class="selection-wrapper mb-0"
               >
+                <template slot="label">
+                  <v-icon>money</v-icon>
+                  <div class="ml-2">Cash</div>
+                </template>
+              </v-radio>
             </v-radio-group>
 
             <hr class="my-3" />
 
             <div class="d-flex align-center">
               <v-checkbox
+                v-model="invoiceActive"
                 hide-details
                 class="mt-1 ml-1 noSpaceCheckbox x1-5transform"
+                :disabled="paymentType == 'cash'"
               ></v-checkbox>
               <div>J'ai besoin d'une facture.</div>
             </div>
@@ -479,10 +492,12 @@
     <!-- Dialog -->
     <v-dialog
       v-model="modalActive"
+      persistent
       content-class="ma-0 modalDialog fullscreen"
       transition="scroll-x-reverse-transition"
+      :max-width="invoiceActive ? '50%' : ''"
     >
-      <div class="fillHeight">
+      <div v-if="reservationActive" class="fillHeight">
         <v-form ref="selectSeat" class="d-flex justify-end">
           <v-card
             tile
@@ -724,6 +739,146 @@
           </v-card>
         </v-form>
       </div>
+
+      <div v-if="invoiceActive" class="white pa-12 position-relative">
+        <span class="closeModal">
+          <v-btn
+            fab
+            plain
+            :ripple="false"
+            @click="
+              modalActive = false;
+              invoiceActive = false;
+            "
+          >
+            <v-icon>close</v-icon>
+          </v-btn>
+        </span>
+        <div class="app-title text-center">Facture</div>
+        <div>
+          <v-radio-group v-model="invoice.type" row>
+            <v-radio
+              color="accent"
+              value="personal"
+              label="Personne"
+              class="mb-0"
+            >
+            </v-radio>
+
+            <v-radio
+              color="accent"
+              value="enterprise"
+              label="Entreprise"
+              class="mb-0"
+            >
+            </v-radio>
+          </v-radio-group>
+        </div>
+
+        <div>
+          <v-radio-group v-model="invoice.title" row>
+            <v-radio color="accent" value="mrs" label="Mme." class="mb-0">
+            </v-radio>
+
+            <v-radio color="accent" value="mr" label="M." class="mb-0">
+            </v-radio>
+          </v-radio-group>
+        </div>
+
+        <div>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field
+                v-model="invoice.firstName"
+                label="Prénom"
+                dense
+                outlined
+                hide-details
+                :rules="[rules.required, rules.min4]"
+              ></v-text-field>
+            </v-col>
+
+            <v-col cols="6">
+              <v-text-field
+                v-model="invoice.lastName"
+                label="Nom de famille"
+                dense
+                outlined
+                hide-details
+                :rules="[rules.required, rules.min4]"
+              ></v-text-field>
+            </v-col>
+
+            <v-col cols="12">
+              <v-text-field
+                v-model="invoice.address"
+                label="Informations d'adresse complémentaires"
+                dense
+                outlined
+                hide-details
+                :rules="[rules.required]"
+              ></v-text-field>
+            </v-col>
+
+            <v-col cols="12">
+              <v-text-field
+                v-model="invoice.streetNo"
+                label="Rue + n°"
+                dense
+                outlined
+                hide-details
+                :rules="[rules.required]"
+              ></v-text-field>
+            </v-col>
+
+            <v-col cols="6">
+              <v-text-field
+                v-model="invoice.postal"
+                label="Cose Postal"
+                dense
+                outlined
+                hide-details
+                :rules="[rules.required]"
+              ></v-text-field>
+            </v-col>
+
+            <v-col cols="6">
+              <v-text-field
+                v-model="invoice.city"
+                label="Ville"
+                dense
+                outlined
+                hide-details
+                :rules="[rules.required]"
+              ></v-text-field>
+            </v-col>
+
+            <v-col cols="12">
+              <v-select
+                v-model="invoice.country"
+                label="Pays"
+                outlined
+                dense
+                :menu-props="{ offsetY: true }"
+                background-color="white"
+                :items="sortMenu"
+                item-value="sortBy"
+                item-text="text"
+              ></v-select>
+            </v-col>
+          </v-row>
+        </div>
+
+        <div class="text-center">
+          <v-btn
+            depressed
+            color="primary"
+            class="gen-button"
+            @click="modalActive = false"
+            >Confirmer</v-btn
+          >
+        </div>
+      </div>
     </v-dialog>
   </div>
 </template>
@@ -739,7 +894,7 @@ export default {
   },
   data() {
     return {
-      modalActive: false,
+      modalActive: !false,
       // queryData: null,
       queryData: {
         from: "Berlin",
@@ -897,6 +1052,11 @@ export default {
         },
       ],
       reservedSeats: [],
+      invoiceActive: !false,
+      invoice: {
+        type: "",
+        title: "",
+      },
       reservationActive: false,
       reservationDone: false,
       optionsActive: false,
@@ -976,6 +1136,22 @@ export default {
       this.modalActive = false;
       this.reservationActive = false;
       this.reservationDone = true;
+    },
+  },
+  watch: {
+    invoiceActive(val) {
+      if (val == true) {
+        this.modalActive = true;
+      } else if (val == false) {
+        this.invoice = {};
+      }
+    },
+    modalActive(val) {
+      if (val == false) {
+        // disable all possible modals
+        // this.invoiceActive = false;
+        this.reservationActive = false;
+      }
     },
   },
   created() {
