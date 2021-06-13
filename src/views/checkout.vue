@@ -4,9 +4,6 @@
       <v-col cols="8">
         <div class="retour">Retour</div>
 
-        <pre>{{ queryData }}</pre>
-        <pre>{{ passengersData }}</pre>
-
         <!-- Passengers -->
         <div class="def-section">
           <div class="passengers">
@@ -430,8 +427,8 @@
           </div>
 
           <div class="route">
-            <div class="d-route begin">Destination A</div>
-            <div class="d-route end">Destination B</div>
+            <div class="d-route begin">{{ queryData.from }}</div>
+            <div class="d-route end">{{ queryData.to }}</div>
           </div>
 
           <div class="d-flex justify-space-between">
