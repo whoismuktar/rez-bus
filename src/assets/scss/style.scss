@@ -87,6 +87,9 @@ hr.broken {
 .parentHeight {
   height: 100%;
 }
+.modalDialog.fullscreen {
+  max-height: 100% !important;
+}
 .no-box-shadow {
   box-shadow: none !important;
 }
