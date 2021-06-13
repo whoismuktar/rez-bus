@@ -27,6 +27,7 @@
                       append-icon="swap_horiz"
                       class="join-input-left route-from"
                       :rules="[rules.required]"
+                      @click:append="swapDestination"
                     >
                       <template slot="prepend-inner-icon">
                         <i class="material-icons-outlined"> power </i>
@@ -699,6 +700,13 @@ export default {
         name: "checkout",
         params: { data: { ...this.query, station } },
       });
+    },
+    swapDestination() {
+      const from = this.query.from;
+      const to = this.query.to;
+
+      this.query.to = from;
+      this.query.from = to;
     },
     searchRoute() {
       const validation = this.$refs.searchTripForm.validate();
