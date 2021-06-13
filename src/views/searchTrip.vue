@@ -601,7 +601,7 @@
                       depressed
                       color="primary"
                       class="gen-button"
-                      @click="proccedtoCheckout"
+                      @click="proccedtoCheckout(station)"
                     >
                       Réserver
                       {{ parseInt(query.adult) + parseInt(query.children) }}
@@ -694,8 +694,11 @@ export default {
     };
   },
   methods: {
-    proccedtoCheckout() {
-      this.$router.push({ name: "checkout", params: { data: this.query } });
+    proccedtoCheckout(station) {
+      this.$router.push({
+        name: "checkout",
+        params: { data: { ...this.query, station } },
+      });
     },
     searchRoute() {
       const validation = this.$refs.searchTripForm.validate();
