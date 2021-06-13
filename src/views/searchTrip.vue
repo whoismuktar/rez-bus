@@ -597,7 +597,12 @@
                       <sup>,{{ station.fare.toString().split(".")[1] }}</sup>
                       <span class="currency">€</span>
                     </h2>
-                    <v-btn depressed color="primary" class="gen-button">
+                    <v-btn
+                      depressed
+                      color="primary"
+                      class="gen-button"
+                      @click="proccedtoCheckout"
+                    >
                       Réserver
                       {{ parseInt(query.adult) + parseInt(query.children) }}
                       sièges
@@ -689,6 +694,9 @@ export default {
     };
   },
   methods: {
+    proccedtoCheckout() {
+      this.$router.push({ name: "checkout", params: { data: this.query } });
+    },
     searchRoute() {
       const validation = this.$refs.searchTripForm.validate();
 
