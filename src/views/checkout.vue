@@ -12,7 +12,10 @@
               <div class="sectionTitle">Passagers</div>
             </div>
 
-            <v-row>
+            <v-row
+              v-for="(passenger, index) in getTotalPassengers"
+              :key="index"
+            >
               <v-col cols="6">
                 <div class="input-wrapper">
                   <div class="input-label">Nom</div>
@@ -48,9 +51,22 @@
               <div class="sectionTitle">Réservation de siège</div>
             </div>
 
-            <div class="selection-wrapper" @click="modalActive">
+            <div
+              class="selection-wrapper"
+              @click="
+                reservationActive = true;
+                modalActive = true;
+              "
+            >
               <div class="d-flex">
                 <v-icon>airline_seat_recline_normal</v-icon>
+                <v-icon
+                  v-if="reservationDone"
+                  color="secondary4"
+                  class="tiny ml-n2 mb-n4"
+                >
+                  check_circle
+                </v-icon>
                 <div class="ml-3">
                   <h2 class="app-title">Sélectionnez votre siège</h2>
                   <p>à partir de 2,99 €</p>
@@ -68,11 +84,17 @@
         <div class="def-section">
           <div class="options">
             <div class="d-flex align-center mb-3">
-              <div class="sectionNo">2</div>
+              <div class="sectionNo">3</div>
               <div class="sectionTitle">Options</div>
             </div>
 
-            <div class="selection-wrapper" @click="modalActive">
+            <div
+              class="selection-wrapper"
+              @click="
+                optionsActive = true;
+                modalActive = true;
+              "
+            >
               <div class="d-flex">
                 <v-icon large>airline_seat_recline_normal</v-icon>
                 <div class="ml-3">
@@ -86,7 +108,13 @@
               </div>
             </div>
 
-            <div class="selection-wrapper" @click="modalActive">
+            <div
+              class="selection-wrapper"
+              @click="
+                luggaageActive = true;
+                modalActive = true;
+              "
+            >
               <div class="d-flex">
                 <v-icon large>airline_seat_recline_normal</v-icon>
                 <div class="ml-3">
@@ -221,15 +249,31 @@
           </div>
 
           <div class="d-flex justify-space-between">
-            <div>X Adults</div>
-            <b>27,99 €</b>
+            <div>
+              <span v-if="queryData.adult > 0">
+                {{ queryData.adult }} Adults
+              </span>
+              <span v-if="queryData.children > 0">
+                , {{ queryData.children }} Enfants
+              </span>
+            </div>
+            <b>{{ queryData.fare }} €</b>
+          </div>
+
+          <div class="d-flex justify-space-between">
+            <div>
+              <span v-if="reservedSeats.length">
+                Seats: {{ getSeletedSeatNames }}
+              </span>
+            </div>
+            <b>{{ getTotalCost }} €</b>
           </div>
 
           <hr class="my-3" />
 
           <div class="d-flex justify-space-between">
             <b>Total</b>
-            <b>27,99 €</b>
+            <b>{{ getGrandTotal }} €</b>
           </div>
 
           <!-- Coupon -->
@@ -282,6 +326,255 @@
         </div>
       </v-col>
     </v-row>
+
+    <!-- Dialog -->
+    <v-dialog
+      v-model="modalActive"
+      content-class="ma-0 modalDialog fullscreen"
+      transition="scroll-x-reverse-transition"
+    >
+      <div class="fillHeight">
+        <v-form ref="selectSeat" class="d-flex justify-end">
+          <v-card
+            tile
+            min-width="344"
+            max-width="100%"
+            min-height="100vh"
+            class="seat-category-description grey lighten-4"
+          >
+            <div class="d-flex flex-column justify-center parentHeight pa-4">
+              <h2>Catégories de sièges</h2>
+
+              <div class="d-flex align-center description-wrapper">
+                <div class="description-icon d-flex flex-column available mr-3">
+                  <div class="seat white">
+                    <v-icon>star</v-icon>
+                  </div>
+                  <div class="seat-head white"></div>
+                </div>
+
+                <div class="description-text">Panorama</div>
+
+                <v-spacer></v-spacer>
+
+                <div class="description-price">
+                  <b>+ 3,99 €</b>
+                </div>
+              </div>
+
+              <div class="d-flex align-center description-wrapper">
+                <div class="description-icon d-flex flex-column available mr-3">
+                  <div class="seat white"></div>
+                  <div class="seat-head white"></div>
+                </div>
+
+                <div class="description-text">Classique</div>
+
+                <v-spacer></v-spacer>
+
+                <div class="description-price">
+                  <b>+ 3,99 €</b>
+                </div>
+              </div>
+
+              <div class="d-flex align-center description-wrapper">
+                <div class="description-icon d-flex flex-column available mr-3">
+                  <div class="seat white">
+                    <v-icon>fit_screen</v-icon>
+                  </div>
+                  <div class="seat-head white"></div>
+                </div>
+
+                <div class="description-text">Table</div>
+
+                <v-spacer></v-spacer>
+
+                <div class="description-price">
+                  <b>+ 3,99 €</b>
+                </div>
+              </div>
+
+              <div class="d-flex align-center description-wrapper">
+                <div class="description-icon d-flex flex-column available mr-3">
+                  <div class="seat secondary">
+                    <v-icon color="borderLine">person</v-icon>
+                  </div>
+                  <div class="seat-head secondary"></div>
+                </div>
+
+                <div class="description-text">Votre siège</div>
+
+                <v-spacer></v-spacer>
+
+                <div class="description-price">
+                  <b>+ 3,99 €</b>
+                </div>
+              </div>
+
+              <div class="d-flex align-center description-wrapper">
+                <div class="description-icon d-flex flex-column available mr-3">
+                  <div class="seat white">
+                    <v-icon>height</v-icon>
+                  </div>
+                  <div class="seat-head white"></div>
+                </div>
+
+                <div class="description-text">Siège confort</div>
+
+                <v-spacer></v-spacer>
+
+                <div class="description-price">
+                  <b>+ 3,99 €</b>
+                </div>
+              </div>
+
+              <div class="d-flex align-center description-wrapper">
+                <div class="description-icon d-flex flex-column cancelled mr-3">
+                  <div class="seat">
+                    <v-icon>close</v-icon>
+                  </div>
+                  <div class="seat-head"></div>
+                </div>
+
+                <div class="description-text">
+                  Indisponible à la réservation
+                </div>
+
+                <v-spacer></v-spacer>
+
+                <div class="description-price">
+                  <b>+ 3,99 €</b>
+                </div>
+              </div>
+            </div>
+          </v-card>
+
+          <v-card tile min-width="410" min-height="100vh" class="ml-n2">
+            <v-card tile class="py-1">
+              <h2 class="app-title">Réservation de siège</h2>
+
+              <p>{{ queryData.from }} - {{ queryData.to }}</p>
+            </v-card>
+            <v-card-text class="borderTestx">
+              <div class="bus-diagram-diagram">
+                <div class="seat-index-wrapper d-flex">
+                  <div class="seat-index">A</div>
+                  <div class="seat-index">B</div>
+                  <v-spacer></v-spacer>
+                  <div class="seat-index">C</div>
+                  <div class="seat-index">D</div>
+                </div>
+
+                <!-- <pre>{{ getTotalCost }}</pre> -->
+                <!-- <pre>{{ reservedSeats }}</pre> -->
+                <!-- <pre>{{ seats }}</pre> -->
+                <!-- <pre>{{ calcSeats }}</pre> -->
+                <!-- seats: {{ seats.length }}
+                <br />
+                getCurrentSelection: {{ getCurrentSelection }}
+                <br />
+                getTotalPassengers: {{ getTotalPassengers }} -->
+                <div class="bus-diagram-mapping d-flex">
+                  <div
+                    class="left-mapping d-flex justify-space-between flex-wrap"
+                  >
+                    <div
+                      v-for="(seat, index) in seats.slice(0, seats.length / 2)"
+                      :key="index"
+                      class="seat-wrapper"
+                      @click="initSelection(seat.id)"
+                    >
+                      <div
+                        v-if="seat.status == 'cancelled'"
+                        class="d-flex flex-column cancelled"
+                      >
+                        <div class="seat">
+                          <v-icon>close</v-icon>
+                        </div>
+                        <div class="seat-head"></div>
+                      </div>
+
+                      <div
+                        v-else-if="seat.status == 'available' && !seat.selected"
+                        class="d-flex flex-column available"
+                      >
+                        <div class="seat"></div>
+                        <div class="seat-head"></div>
+                      </div>
+
+                      <div
+                        v-if="seat.status == 'available' && seat.selected"
+                        class="d-flex flex-column available selected"
+                      >
+                        <div class="seat secondary">
+                          <v-icon color="borderLine">person</v-icon>
+                        </div>
+                        <div class="seat-head secondary"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mapping-separator d-flex flex-column">
+                    <div
+                      v-for="(n, index) in seats.length / 4"
+                      :key="index"
+                      class="allChildrenCenter flex-grow-1 flex-shrink-0"
+                    >
+                      {{ n }}
+                    </div>
+                  </div>
+                  <div
+                    class="right-mapping d-flex justify-space-between flex-wrap"
+                  >
+                    <div
+                      v-for="(seat, index) in seats.slice(
+                        seats.length / 2,
+                        seats.length
+                      )"
+                      :key="index"
+                      class="seat-wrapper"
+                    >
+                      <div
+                        v-if="seat.status == 'cancelled'"
+                        class="d-flex flex-column cancelled"
+                      >
+                        <div class="seat">
+                          <v-icon>close</v-icon>
+                        </div>
+                        <div class="seat-head"></div>
+                      </div>
+
+                      <div
+                        v-if="seat.status == 'available'"
+                        class="d-flex flex-column available"
+                      >
+                        <div class="seat"></div>
+                        <div class="seat-head"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </v-card-text>
+            <v-card-actions class="bus-diagram-action white">
+              <div>
+                {{ getCurrentSelection }} des {{ getTotalPassengers }} sièges
+                réservés.
+              </div>
+              <v-spacer></v-spacer>
+              <v-btn
+                dense
+                depressed
+                color="primary"
+                class="gen-button"
+                @click="confirmReservation"
+              >
+                Confirmer ({{ getTotalCost }})
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-form>
+      </div>
+    </v-dialog>
   </div>
 </template>
 
@@ -296,6 +589,169 @@ export default {
   },
   data() {
     return {
+      modalActive: false,
+      // queryData: null,
+      queryData: {
+        from: "Berlin",
+        to: "Munich",
+        adult: "2",
+        children: "2",
+        bike_slot: "0",
+        fare: 90,
+        rideDate: "2021-06-16",
+      },
+      seats: [
+        {
+          status: "cancelled",
+          id: 0,
+          cost: "5.95",
+          category: "siège confort",
+        },
+        {
+          status: "available",
+          id: 1,
+          cost: "8.40",
+          category: "classique",
+        },
+        {
+          status: "cancelled",
+          id: 2,
+          cost: "10.85",
+          category: "classique",
+        },
+        {
+          status: "cancelled",
+          id: 3,
+          cost: "13.30",
+          category: "table",
+        },
+        {
+          status: "cancelled",
+          id: 4,
+          cost: "15.75",
+          category: "classique",
+        },
+        {
+          status: "cancelled",
+          id: 5,
+          cost: "18.20",
+          category: "classique",
+        },
+        {
+          status: "available",
+          id: 6,
+          cost: "20.65",
+          category: "table",
+        },
+        {
+          status: "available",
+          id: 7,
+          cost: "23.10",
+          category: "siège confort",
+        },
+        {
+          status: "available",
+          id: 8,
+          cost: "25.55",
+          category: "table",
+        },
+        {
+          status: "available",
+          id: 9,
+          cost: "28.00",
+          category: "classique",
+        },
+        {
+          status: "available",
+          id: 10,
+          cost: "30.45",
+          category: "classique",
+        },
+        {
+          status: "available",
+          id: 11,
+          cost: "32.90",
+          category: "siège confort",
+        },
+        {
+          status: "cancelled",
+          id: 12,
+          cost: "35.35",
+          category: "classique",
+        },
+        {
+          status: "available",
+          id: 13,
+          cost: "37.80",
+          category: "siège confort",
+        },
+        {
+          status: "cancelled",
+          id: 14,
+          cost: "40.25",
+          category: "table",
+        },
+        {
+          status: "cancelled",
+          id: 15,
+          cost: "42.70",
+          category: "classique",
+        },
+        {
+          status: "cancelled",
+          id: 16,
+          cost: "45.15",
+          category: "siège confort",
+        },
+        {
+          status: "cancelled",
+          id: 17,
+          cost: "47.60",
+          category: "table",
+        },
+        {
+          status: "available",
+          id: 18,
+          cost: "50.05",
+          category: "classique",
+        },
+        {
+          status: "available",
+          id: 19,
+          cost: "52.50",
+          category: "classique",
+        },
+        {
+          status: "available",
+          id: 20,
+          cost: "54.95",
+          category: "table",
+        },
+        {
+          status: "available",
+          id: 21,
+          cost: "57.40",
+          category: "table",
+        },
+        {
+          status: "available",
+          id: 22,
+          cost: "59.85",
+          category: "table",
+        },
+        {
+          status: "available",
+          id: 23,
+          cost: "62.30",
+          category: "siège confort",
+        },
+      ],
+      reservedSeats: [],
+      reservationActive: false,
+      reservationDone: false,
+      optionsActive: false,
+      luggaageActive: false,
+      couponReady: false,
       nom: "",
       prenom: "",
       email: "",
@@ -308,9 +764,6 @@ export default {
     };
   },
   methods: {
-    modalActive() {
-      console.log("active");
-    },
     couponToUpperCase(val) {
       this.coupon = val.toUpperCase();
     },
@@ -320,20 +773,98 @@ export default {
         // Animation complete.
       });
     },
-    // calcDayTime() {
-    //   let hr = new Date().getHours();
+    initSelection(seatId) {
+      const currentSeat = this.seats[seatId];
 
-    //   if (hr > 12) {
-    //     // console.log("pm");
-    //     return hr - 12;
-    //   } else {
-    //     // console.log("am");
-    //     return hr;
-    //   }
-    // },
+      if (currentSeat.status == "available" && currentSeat.selected == true) {
+        // Deselect Seat
+        this.deselectSeat(seatId);
+      } else if (this.getCurrentSelection < this.getTotalPassengers) {
+        // Check total selection against total passengers
+        // Select Seat
+        if (currentSeat.status == "available") {
+          this.selectSeat(seatId);
+        }
+      }
+    },
+    selectSeat(seatId) {
+      // console.log("selected");
+      this.seats[seatId].selected = true;
+      this.reservedSeats.push(this.seats[seatId]);
+      // console.log("getCurrentSelection:", this.getCurrentSelection);
+
+      this.$forceUpdate();
+    },
+    deselectSeat(seatId) {
+      // console.log("deselected");
+      delete this.seats[seatId].selected;
+      this.reservedSeats.slice(seatId, 1);
+      // console.log("getCurrentSelection:", this.getCurrentSelection);
+
+      this.$forceUpdate();
+    },
+    confirmReservation() {
+      this.modalActive = false;
+      this.reservationActive = false;
+      this.reservationDone = true;
+    },
+  },
+  created() {
+    // this.queryData = this.$route.params.data;
+    if (this.queryData == null) {
+      // alert("Please select trips");
+      // this.$router.push("/search-trip");
+    }
   },
   computed: {
     ...mapGetters(["rules"]),
+    getTotalPassengers() {
+      console.log(this.queryData);
+      return parseInt(this.queryData.adult) + parseInt(this.queryData.children);
+    },
+    getCurrentSelection: {
+      cache: false,
+      get() {
+        console.log("action");
+        const seats = this.seats;
+        let count = 0;
+
+        seats.map((seat) => {
+          // console.log(seat);
+          if (seat.selected == true) {
+            console.log(seat);
+            count++;
+          }
+        });
+
+        return count;
+      },
+    },
+    getTotalCost() {
+      const reducer = (acc, current) => acc + current;
+      let totalArr = this.reservedSeats.map((seat) => parseFloat(seat.cost));
+
+      let total = totalArr.reduce(reducer, 0);
+
+      console.log(total);
+      return total.toFixed(2) || 0;
+    },
+    getGrandTotal() {
+      return parseFloat(this.getTotalCost) + parseFloat(this.queryData.fare);
+    },
+    getSeletedSeatNames() {
+      let seats = this.reservedSeats.map((seat) => seat.id);
+      console.log("seats:", seats);
+      return seats.join();
+    },
+    calcSeats() {
+      return this.seats.map((seat) => {
+        const categories = ["classique", "table", "siège confort"];
+        const random = Math.floor(Math.random() * categories.length);
+        seat.category = categories[random];
+        return seat;
+      });
+    },
   },
 };
 </script>
@@ -373,5 +904,107 @@ export default {
 }
 .slideCoupon {
   cursor: pointer;
+}
+
+.seat-category-description .description-icon {
+  width: 20%;
+}
+.seat-category-description .description-text {
+  width: 30%;
+}
+.seat-category-description .description-icon.available .seat-head,
+.seat-category-description .description-icon.available .seat {
+  border-color: var(--v-borderLine-base) !important;
+}
+.seat-category-description .description-wrapper {
+  margin-bottom: 12px;
+}
+
+/* Bus Diagram */
+.bus-diagram-mapping {
+  border-radius: 30px;
+  border: 2px solid var(--v-borderLine-base);
+  min-height: 60vh;
+}
+.bus-diagram-mapping,
+.seat-index-wrapper {
+  padding: 20px;
+}
+.seat-index-wrapper {
+  font-weight: bold;
+  text-align: center;
+  padding-bottom: 0;
+}
+.seat-index {
+  width: 20%;
+}
+.left-mapping,
+.right-mapping {
+  width: 40%;
+}
+.mapping-separator {
+  width: 20%;
+}
+.seat-wrapper {
+  width: 45%;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.seat {
+  display: flex;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+}
+.cancelled .seat {
+  background-color: var(--v-borderLine-base);
+  border-radius: 6px 6px 0 0;
+}
+.available .seat {
+  background-color: transparent;
+  border-radius: 6px 6px 0 0;
+  border: 3px solid var(--v-borderLine-base);
+  border-bottom: none;
+  height: 55px;
+}
+
+.seat-head {
+  height: 10px;
+  border-radius: 0px 0px 6px 6px;
+}
+.cancelled .seat-head {
+  background-color: var(--v-borderLine-base);
+  margin-top: 2px;
+}
+.available .seat-head {
+  background-color: transparent;
+  border-radius: 6px;
+  border: 3px solid var(--v-borderLine-base);
+  height: 14px;
+  margin-top: -7px;
+}
+.available.selected .seat-head {
+  border: 3px solid var(--v-borderLine-base);
+  height: 10px;
+  border-radius: 0px 0px 6px 6px;
+  margin-top: 2px;
+}
+.available.selected .seat {
+  height: 50px;
+}
+
+.seat::after {
+  content: "";
+}
+.cancelled::after {
+  content: "";
+}
+
+.bus-diagram-action {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0px -2px 7px -1px rgb(0 0 0 / 37%);
+  padding: 20px;
 }
 </style>
