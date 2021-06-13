@@ -647,7 +647,7 @@
           </v-card>
 
           <v-card tile min-width="410" min-height="100vh" class="ml-n2">
-            <v-card tile class="py-1">
+            <v-card tile class="pa-2 text-center">
               <h2 class="app-title">Réservation de siège</h2>
 
               <p>{{ queryData.from }} - {{ queryData.to }}</p>
