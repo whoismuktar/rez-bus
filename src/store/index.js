@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import all_countries from "../utils/countries.json";
 
 Vue.use(Vuex);
 
@@ -33,6 +34,15 @@ export default new Vuex.Store({
       };
 
       // return rules;
+    },
+    countryByName() {
+      var data = all_countries;
+      var names = [];
+      data.forEach((item) => {
+        names.push(item.name);
+      });
+
+      return names;
     },
   },
   mutations: {},
