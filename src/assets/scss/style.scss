@@ -71,6 +71,9 @@ hr.broken {
 .borderTest{
   border: 1px solid black !important;
 }
+.borderMe {
+  border: 1px solid var(--v-borderLine-base) !important;
+}
 .app-max-width {
   max-width: 1044px !important;
 }
