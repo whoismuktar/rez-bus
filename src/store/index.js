@@ -15,6 +15,8 @@ export default new Vuex.Store({
           !value ||
           /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]{10,14}$/.test(value) ||
           "Enter a valid international phone number",
+        alphabet: (value) =>
+          !value || /^[a-zA-Z]+$/.test(value) || "Only alpabets are allowed",
         number: (value) => !value || /^[0-9]*$/.test(value) || "Invalid value",
         email: (value) =>
           !value ||
