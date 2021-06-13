@@ -90,9 +90,6 @@ hr.broken {
 .parentHeight {
   height: 100%;
 }
-.modalDialog.fullscreen {
-  max-height: 100% !important;
-}
 .no-box-shadow {
   box-shadow: none !important;
 }
@@ -106,7 +103,7 @@ hr.broken {
   margin: 0 auto;
 }
 .centerWidth50 {
-  width: 50%;
+  width: 50% !important;
   margin: 0 auto;
 }
 .gen-button {
@@ -173,6 +170,18 @@ i.material-icons-outlined {
   border: 1px solid var(--v-borderLine-base);
   height: 15px;
   width: 15px;
+}
+
+.modalDialog.fullscreen {
+  max-height: 100% !important;
+}
+.closeModal {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+.closeModal .v-icon {
+  font-size: 30px !important;
 }
 .x1-5transform {
   transform: scale(1.5);
