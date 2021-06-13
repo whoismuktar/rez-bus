@@ -733,11 +733,21 @@
                       </div>
 
                       <div
-                        v-if="seat.status == 'available'"
+                        v-else-if="seat.status == 'available' && !seat.selected"
                         class="d-flex flex-column available"
                       >
                         <div class="seat"></div>
                         <div class="seat-head"></div>
+                      </div>
+
+                      <div
+                        v-if="seat.status == 'available' && seat.selected"
+                        class="d-flex flex-column available selected"
+                      >
+                        <div class="seat secondary">
+                          <v-icon color="borderLine">person</v-icon>
+                        </div>
+                        <div class="seat-head secondary"></div>
                       </div>
                     </div>
                   </div>
