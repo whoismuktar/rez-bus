@@ -5,8 +5,46 @@ import all_countries from "../utils/countries.json";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
+  state: {
+    user: {
+      firstName: "John",
+      lastName: "John",
+      email: "john@email.com",
+    },
+  },
   getters: {
+    daysOfTheWeek() {
+      const days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
+      return days;
+    },
+    monthNames() {
+      const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      return months;
+    },
+    nowDate() {
+      return new Date().toISOString().slice(0, 10);
+    },
     rules() {
       return {
         required: (value) => !!value || "Required",
