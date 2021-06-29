@@ -3,6 +3,7 @@
 
 .mainBody {
   padding-top: $app-top-spacing !important;
+  // overflow: auto;
 }
 .hero-comp {
   margin-top: (-$app-top-spacing);
@@ -57,7 +58,7 @@ hr.broken {
   position: relative;
 }
 .position-absolute {
-  position: absolute;
+  position: absolute !important;
 }
 .position-fixed {
   position: fixed;
@@ -70,6 +71,12 @@ hr.broken {
 }
 .borderTest{
   border: 1px solid black !important;
+}
+.testFloat {
+  position: fixed;
+  left: 0;
+  z-index: 9;
+  background: #fff;
 }
 .borderMe {
   border: 1px solid var(--v-borderLine-base) !important;
@@ -189,6 +196,30 @@ i.material-icons-outlined {
 .centered-input input {
   text-align: center;
 }
+.in-popUp {
+  position: relative;
+  display: flex;
+  padding: 7px;
+
+  &.fail {
+    border: 1px solid var(--v-error-base);
+  }
+
+  &.pass {
+    border: 1px solid var(--v-secondary4-base);
+  }
+
+  &-message {
+    width: 97%;
+    text-align: center;
+  }
+
+  // &-closer {
+  //   position: absolute !important;
+  //   right: 5px;
+  //   top: 4px;
+  // }
+}
 
 .v-radio .v-input--selection-controls__input {
   transform: scale(1.3);
@@ -210,6 +241,36 @@ i.material-icons-outlined {
 }
 .vue-tel-input-vuetify .country-code .v-input__slot {
   margin-bottom: 0 !important;
+}
+
+
+
+// Dropdown Date
+.date-dropdown-container {
+  display: flex;
+  justify-content: space-between;
+}
+.date-dropdown-select-wrapper {
+  width: 32%;
+  border-radius: 5px;
+  border: 1px solid #9e9e9e;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+
+  & .year,
+  & .month,
+  & .day {
+    width: 100%;    
+    position: relative;
+    z-index: 1;
+  }
+
+  & i { 
+    position: absolute !important;
+    right: 0;
+    align-self: center;
+  }
 }
 
 // route styling
