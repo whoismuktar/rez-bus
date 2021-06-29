@@ -21,6 +21,11 @@ const routes = [
     component: () => import("../views/signIn.vue"),
   },
   {
+    path: "/forgot-password",
+    name: "SiginIn",
+    component: () => import("../views/forgotPassword.vue"),
+  },
+  {
     path: "/search-trip",
     name: "SearchTrip",
     component: () => import("../views/searchTrip.vue"),
@@ -34,6 +39,27 @@ const routes = [
     path: "/transaction-summary", // to be converted to parameter
     name: "TransactionSummary",
     component: () => import("../components/transactionSummary.vue"),
+  },
+  {
+    path: "/profile",
+    component: () => import("../layout/profileLayout.vue"),
+    children: [
+      {
+        path: "/",
+        name: "profile",
+        component: () => import("../views/auth/profile/profile.vue"),
+      },
+      {
+        path: "/my-reservations",
+        name: "myReservations",
+        component: () => import("../views/auth/profile/myReservations.vue"),
+      },
+      {
+        path: "/my-payments",
+        name: "paymentMode",
+        component: () => import("../views/auth/profile/myPayments.vue"),
+      },
+    ],
   },
   {
     path: "*",
