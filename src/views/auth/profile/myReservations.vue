@@ -35,7 +35,7 @@
 
     <div v-else>
       <v-row>
-        <v-col cols="8">
+        <v-col cols="12" lg="8">
           <h3>Annuler / modifier votre réservation</h3>
 
           <div class="def-section">

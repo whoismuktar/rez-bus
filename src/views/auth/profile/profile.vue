@@ -13,10 +13,10 @@
 
     <div>
       <v-row>
-        <v-col cols="9">
+        <v-col cols="12" lg="9" md="9" sm="12">
           <v-form ref="profileUpdateForm">
             <v-row>
-              <v-col cols="6" class="py-0">
+              <v-col cols="6" lg="6" md="6" sm="12" class="py-0">
                 <div class="input-wrapper">
                   <div class="input-label">Date de naissance</div>
                   <v-text-field
@@ -29,7 +29,7 @@
                 </div>
               </v-col>
 
-              <v-col cols="6" class="py-0">
+              <v-col cols="6" lg="6" md="6" sm="12" class="py-0">
                 <div class="input-wrapper">
                   <div class="input-label">Date de naissance</div>
                   <v-text-field
@@ -146,13 +146,13 @@
           </v-form>
         </v-col>
 
-        <v-col cols="9">
-          <hr />
+        <v-col cols="12" lg="9" md="9" sm="12">
+          <hr class="my-5" />
 
-          <div class="app-title">Changer le mot de passe</div>
+          <div class="app-title mb-7">Changer le mot de passe</div>
 
           <v-form ref="passwordUpdateForm">
-            <v-row>
+            <v-row align="end">
               <v-col cols="6" class="py-0">
                 <div class="input-wrapper">
                   <div class="input-label">Ancien mot de passe</div>
@@ -207,10 +207,10 @@
             </div>
           </v-form>
 
-          <hr />
+          <hr class="my-5" />
 
           <div
-            class="cursorMe"
+            class="cursorMe primary--text"
             @click="
               modalActive = true;
               deleteAccountActive = true;

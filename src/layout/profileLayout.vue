@@ -1,7 +1,12 @@
 <template>
   <div class="layout-wrapper profile-layout">
     <div class="d-flex">
-      <v-navigation-drawer v-model="toggle" permanent width="15%" height="auto">
+      <v-navigation-drawer
+        v-model="toggle"
+        permanent
+        height="auto"
+        :mini-variant="$vuetify.breakpoint.smAndDown"
+      >
         <v-list class="pt-0">
           <v-list-item-group v-model="currentMenu">
             <v-list-item
@@ -82,7 +87,8 @@ export default {
 
 <style>
 .drawer-content {
-  width: 85%;
-  padding: 0 30px 90px 30px !important;
+  width: 100%;
+  padding: 0 20px 90px 20px !important;
+  flex: unset;
 }
 </style>
