@@ -1,5 +1,11 @@
 <template>
   <div class="voucher">
+    <div>
+      <v-btn outlined color="primary" class="mr-2 gen-button">
+        <v-icon class="mr-2">chevron_left</v-icon>
+        <span>Revenir aux Réservations</span>
+      </v-btn>
+    </div>
     <div class="allChildrenCenter halfFillHeight">
       <div class="def-section centerWidth50">
         Suite a votre demande de remboursement, vous beneficier d'un code promo
