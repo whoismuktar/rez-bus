@@ -93,7 +93,7 @@
               :key="index"
               class="def-section"
             >
-              <div class="d-flex">
+              <div class="d-flex align-center">
                 <i class="material-icons-outlined mr-1"> person </i>
                 <div
                   class="mr-2"
@@ -147,7 +147,11 @@
             </div>
 
             <div class="text-center mt-5">
-              <v-btn color="primary" class="gen-button" @click="proceed">
+              <v-btn
+                color="primary"
+                class="gen-button"
+                @click="proceedToRefund"
+              >
                 Continuer
               </v-btn>
             </div>
@@ -350,8 +354,19 @@ export default {
     },
   },
   methods: {
-    proceed() {
-      this.reservationSelected = false;
+    proceedToRefund() {
+      this.refundActive = false;
+
+      const collateRefunds = this.selectedReservation.passengers.filter(
+        (passenger) => (passenger.cancelled = true)
+      );
+
+      console.log(collateRefunds);
+
+      this.$router.push({
+        name: "refund",
+        params: { collateRefunds },
+      });
     },
     openReservation(trip) {
       console.log(trip);
