@@ -141,39 +141,16 @@
         <v-col cols="4">
           <h3>Vos Modifications</h3>
           <div v-if="refundActive">
-            <b>{{ getDateTime }}</b>
-
-            <div class="route">
-              <div class="d-route begin">{{ selectedReservation.from }}</div>
-              <div class="d-route end">{{ selectedReservation.to }}</div>
+            <div>
+              Vous navez apporté aucune modification a votre réservation jusqu’a
+              présent.
             </div>
 
-            <div class="d-flex justify-space-between">
-              <div>
-                <s>
-                  {{ selectedReservation.from }} - {{ selectedReservation.to }}
-                </s>
-              </div>
-              <b>-{{ selectedReservation.grandTotal }} €</b>
+            <div class="text-center mt-5">
+              <v-btn color="primary" class="gen-button" @click="proceed">
+                Continuer
+              </v-btn>
             </div>
-
-            <hr class="my-3" />
-
-            <div class="d-flex justify-space-between">
-              <b>Remboursement</b>
-              <h2>{{ selectedReservation.grandTotal }} €</h2>
-            </div>
-          </div>
-
-          <!-- <div>
-            Vous navez apporté aucune modification a votre réservation jusqu’a
-            présent.
-          </div> -->
-
-          <div class="text-center mt-5">
-            <v-btn color="primary" class="gen-button" @click="proceed">
-              Annuler toute la réservation
-            </v-btn>
           </div>
         </v-col>
       </v-row>
