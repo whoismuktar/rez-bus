@@ -22,7 +22,7 @@ const routes = [
   },
   {
     path: "/forgot-password",
-    name: "SiginIn",
+    name: "forgotPassword",
     component: () => import("../views/forgotPassword.vue"),
   },
   {
@@ -63,6 +63,11 @@ const routes = [
         path: "/refund",
         name: "refund",
         component: () => import("../views/auth/profile/refund.vue"),
+      },
+      {
+        path: "/voucher",
+        name: "refundVoucher",
+        component: () => import("../views/auth/profile/refundVoucher.vue"),
       },
     ],
   },
