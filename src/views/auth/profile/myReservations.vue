@@ -403,8 +403,6 @@ export default {
       this.modalActive = false;
     },
     toggleCancelTrip() {
-      this.refundActive = true;
-
       const status = this.selectedReservation.passengers.some(
         (passenger) => passenger.cancelled == true
       );
@@ -412,10 +410,14 @@ export default {
         this.selectedReservation.passengers.forEach(
           (passenger) => (passenger.cancelled = true)
         );
+
+        this.refundActive = true;
       } else if (status) {
         this.selectedReservation.passengers.forEach(
           (passenger) => delete passenger.cancelled
         );
+
+        this.refundActive = false;
       }
       this.$forceUpdate();
     },
