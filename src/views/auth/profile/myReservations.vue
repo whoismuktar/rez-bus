@@ -403,22 +403,24 @@ export default {
       this.modalActive = false;
     },
     toggleCancelTrip() {
-      const status = this.selectedReservation.passengers.some(
+      const status = this.selectedReservation.passengers.every(
         (passenger) => passenger.cancelled == true
-      );
-      if (!status) {
-        this.selectedReservation.passengers.forEach(
-          (passenger) => (passenger.cancelled = true)
-        );
+      ); // check if all passengers' trips are cancelled
 
-        this.refundActive = true;
-      } else if (status) {
+      if (status) {
         this.selectedReservation.passengers.forEach(
           (passenger) => delete passenger.cancelled
         );
 
         this.refundActive = false;
+      } else {
+        this.selectedReservation.passengers.forEach(
+          (passenger) => (passenger.cancelled = true)
+        );
+
+        this.refundActive = true;
       }
+
       this.$forceUpdate();
     },
     toggleCancelPassenger(index) {
