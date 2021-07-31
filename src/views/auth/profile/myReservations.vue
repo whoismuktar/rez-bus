@@ -81,7 +81,7 @@
                   color="primary"
                   class="gen-button"
                   :disabled="updateProhibited"
-                  @click="!updateProhibited ? (refundActive = true) : ''"
+                  @click="!updateProhibited ? toggleCancelTrip() : ''"
                 >
                   Annuler
                 </v-btn>
@@ -95,7 +95,10 @@
             >
               <div class="d-flex">
                 <i class="material-icons-outlined mr-1"> person </i>
-                <div class="mr-2">
+                <div
+                  class="mr-2"
+                  :class="person.cancelled ? 'lineThrough' : ''"
+                >
                   <span>{{ person.firstName }} </span>
                   <span>{{ person.lastName }}</span>
                 </div>
@@ -107,12 +110,15 @@
                   Modifier les données
                 </div>
 
-                <div
-                  class="secondary--text cursorMe"
-                  @click="openEditTripBio(index)"
+                <v-btn
+                  :ripple="false"
+                  plain
+                  text
+                  class="secondary--text cursorMe gen-button"
+                  @click="toggleCancelPassenger(index)"
                 >
                   Annuler
-                </div>
+                </v-btn>
               </div>
             </div>
           </div>
@@ -282,6 +288,7 @@ export default {
             firstName: "csdsd",
             lastName: "cdsdc",
             type: "adult",
+            // cancelled: true,
           },
           {
             firstName: "sdcsd",
@@ -394,6 +401,36 @@ export default {
       this.selectedReservation.passengers[index] = this.selectedPassenger;
 
       this.modalActive = false;
+    },
+    toggleCancelTrip() {
+      this.refundActive = true;
+
+      const status = this.selectedReservation.passengers.some(
+        (passenger) => passenger.cancelled == true
+      );
+      if (!status) {
+        this.selectedReservation.passengers.forEach(
+          (passenger) => (passenger.cancelled = true)
+        );
+      } else if (status) {
+        this.selectedReservation.passengers.forEach(
+          (passenger) => delete passenger.cancelled
+        );
+      }
+      this.$forceUpdate();
+    },
+    toggleCancelPassenger(index) {
+      const prohibited = this.updateProhibited;
+
+      if (!prohibited) {
+        const status = this.selectedReservation.passengers[index].cancelled;
+        if (status == undefined || status == false) {
+          this.selectedReservation.passengers[index].cancelled = true;
+        } else if (status) {
+          this.selectedReservation.passengers[index].cancelled = false;
+        }
+        this.$forceUpdate();
+      }
     },
   },
   computed: {
