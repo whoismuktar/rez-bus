@@ -23,14 +23,14 @@
       <v-col cols="12" lg="5" md="6">
         <h2 class="text-center">Reinitialise le mot de passe</h2>
 
-        <v-form ref="resetPasswordForm">
+        <v-form ref="resetPasswordForm" @submit.prevent="resetPassword">
           <div class="input-wrapper">
             <div class="input-label">E-mail</div>
             <v-text-field
               v-model="loginID"
               dense
               outlined
-              hide-details="auto"
+              hide-details
               placeholder="xxx@gmail.com ou +226XXXXXX"
               :rules="[
                 rules.required,
@@ -73,8 +73,12 @@ export default {
       const validation = this.$refs.resetPasswordForm.validate();
 
       if (validation) {
+        this.resetError = false; // disable error msg regardless
+
+        // Initial forgot password method
         this.resetSuccess = true;
       } else {
+        this.resetSuccess = false; // disable success msg regardless
         this.resetError = true;
       }
     },
