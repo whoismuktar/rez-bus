@@ -38,12 +38,23 @@
         <v-col cols="12" lg="8">
           <h3>Annuler / modifier votre réservation</h3>
 
-          <div class="def-section">
+          <div class="def-section d-flex justify-space-between">
             <div>
               <div>Réservation: #{{ selectedReservation.id }}</div>
               <div>
                 E-mail: <span>{{ user.email }}</span>
               </div>
+            </div>
+
+            <div>
+              <v-btn outlined color="primary" class="mr-2 gen-button">
+                <v-icon class="mr-2">get_app</v-icon>
+                <span>Billet</span>
+              </v-btn>
+              <v-btn outlined color="primary" class="gen-button">
+                <v-icon class="mr-2">get_app</v-icon>
+                <span>Facture</span>
+              </v-btn>
             </div>
           </div>
 
@@ -69,6 +80,7 @@
                   outlined
                   color="primary"
                   class="gen-button"
+                  :disabled="updateProhibited"
                   @click="!updateProhibited ? (refundActive = true) : ''"
                 >
                   Annuler
@@ -94,6 +106,7 @@
                 >
                   Modifier les données
                 </div>
+
                 <div
                   class="secondary--text cursorMe"
                   @click="openEditTripBio(index)"
@@ -111,8 +124,8 @@
             <span class="mx-4"></span>
             <v-btn
               color="primary"
-              dark
               class="gen-button"
+              :disabled="updateProhibited"
               @click="!updateProhibited ? (refundActive = true) : ''"
             >
               Annuler toute la réservation
