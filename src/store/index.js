@@ -47,7 +47,7 @@ export default new Vuex.Store({
     },
     rules() {
       return {
-        required: (value) => !!value || "Required",
+        required: (value) => !!value || "Champs obligatoire",
         min3: (value) => value.length >= 3 || "Min 3 characters",
         min4: (value) => value.length >= 4 || "Min 4 characters",
         phoneNumber: (value) =>
