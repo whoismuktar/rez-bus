@@ -60,7 +60,7 @@ export default new Vuex.Store({
         email: (value) =>
           !value ||
           /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
-          "Invalid E-mail",
+          "Vous devez saisir une adresse mail valide",
         password: (value) => {
           const pattern =
             /^(?=\S*[a-z])(?=\S*[A-Z])(?=\S*\d)(?=\S*([^\w\s]|[_]))\S{8,}$/;
