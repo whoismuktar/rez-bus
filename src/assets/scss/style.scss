@@ -21,6 +21,9 @@
 .app-title {
   font-size: 28px;
 }
+.lineThrough {
+  text-decoration: line-through;
+}
 hr {
   height: 1px;
   width: 100%;
@@ -90,6 +93,9 @@ hr.broken {
 }
 .fillHeight {
   height: 100vh;
+}
+.halfFillHeight {
+  height: 50vh;
 }
 .parentWidth {
   width: 100%;
