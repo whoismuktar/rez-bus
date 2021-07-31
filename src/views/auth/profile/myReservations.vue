@@ -89,10 +89,16 @@
                 </div>
 
                 <div
-                  class="primary--text cursorMe"
+                  class="primary--text cursorMe mr-4"
                   @click="openEditTripBio(index)"
                 >
                   Modifier les données
+                </div>
+                <div
+                  class="secondary--text cursorMe"
+                  @click="openEditTripBio(index)"
+                >
+                  Annuler
                 </div>
               </div>
             </div>
@@ -255,7 +261,7 @@ export default {
         children: "2",
         bike_slot: "0",
         fare: 90,
-        rideDate: "2021-02-30",
+        rideDate: "2021-11-30",
         completed: true,
         grandTotal: 400,
         passengers: [
