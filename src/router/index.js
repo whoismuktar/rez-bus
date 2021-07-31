@@ -59,6 +59,11 @@ const routes = [
         name: "paymentMode",
         component: () => import("../views/auth/profile/myPayments.vue"),
       },
+      {
+        path: "/refund",
+        name: "refund",
+        component: () => import("../views/auth/profile/refund.vue"),
+      },
     ],
   },
   {
