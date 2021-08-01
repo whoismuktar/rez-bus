@@ -132,7 +132,7 @@
               color="primary"
               class="gen-button"
               :disabled="updateProhibited"
-              @click="!updateProhibited ? (refundActive = true) : ''"
+              @click="toggleCancelPassenger(index)"
             >
               Annuler toute la réservation
             </v-btn>
@@ -140,7 +140,7 @@
         </v-col>
         <v-col cols="4">
           <h3>Vos Modifications</h3>
-          <div v-if="refundActive">
+          <div>
             <div>
               Vous navez apporté aucune modification a votre réservation jusqu’a
               présent.
@@ -248,7 +248,6 @@ export default {
       modalActive: false,
       editTripBioActive: false,
       reservationSelected: !false,
-      refundActive: false,
       disableProceed: true,
       changeDetected: false,
       selectedPassenger: {},
@@ -347,18 +346,11 @@ export default {
         this.passengerIndex = null;
       }
     },
-    refundActive(val) {
-      if (val) {
-        this.disableProceed = false;
-      }
-    },
   },
   methods: {
     proceedToRefund() {
-      this.refundActive = false;
-
       const collateRefunds = this.selectedReservation.passengers.filter(
-        (passenger) => (passenger.cancelled = true)
+        (passenger) => passenger.cancelled === true
       );
 
       console.log(collateRefunds);
@@ -403,14 +395,10 @@ export default {
         this.selectedReservation.passengers.forEach(
           (passenger) => delete passenger.cancelled
         );
-
-        this.refundActive = false;
       } else {
         this.selectedReservation.passengers.forEach(
           (passenger) => (passenger.cancelled = true)
         );
-
-        this.refundActive = true;
       }
 
       this.$forceUpdate();
