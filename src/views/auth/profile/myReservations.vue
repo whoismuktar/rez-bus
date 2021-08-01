@@ -256,6 +256,9 @@ export default {
         id: 1234567,
         from: "Berlin",
         to: "Munich",
+        price_per_adult: 10,
+        price_per_child: 5,
+        price_per_bicycle: 2,
         adult: "2",
         children: "2",
         bike_slot: "0",
@@ -357,7 +360,15 @@ export default {
 
       this.$router.push({
         name: "refund",
-        params: { collateRefunds },
+        params: {
+          collateRefunds,
+          // individual price below depends on BE's api
+          price: {
+            price_per_adult: 10,
+            price_per_child: 5,
+            price_per_bicycle: 2,
+          },
+        },
       });
     },
     openReservation(trip) {
