@@ -13,6 +13,18 @@
             </v-radio-group>
           </div>
 
+          <div v-if="noPassengerSelected" class="in-popUp fail">
+            <div class="in-popUp-message">
+              Le passager ne peut pas être vide
+            </div>
+            <v-icon
+              class="in-popUp-closer"
+              @click="noPassengerSelected = false"
+            >
+              close
+            </v-icon>
+          </div>
+
           <v-form ref="searchTripForm">
             <v-row align="center">
               <v-col cols="5">
@@ -625,6 +637,7 @@ export default {
     return {
       tripMode: "oneway",
       searResultReady: false,
+      noPassengerSelected: false,
       query: {
         from: "Berlin",
         to: "Munich",
@@ -690,7 +703,7 @@ export default {
         "Veuillez rester assis lorsque vous êtes à bord",
       ],
       rules: {
-        required: (value) => !!value || "Required",
+        required: (value) => !!value || "Champs obligatoire",
       },
     };
   },
@@ -710,8 +723,17 @@ export default {
     },
     searchRoute() {
       const validation = this.$refs.searchTripForm.validate();
+      const validation2 = this.query.adult > 0 || this.query.children > 0;
 
-      if (validation) {
+      if (!validation2) {
+        this.noPassengerSelected = true;
+        return;
+      }
+
+      // Switch off validation2 regardless
+      this.noPassengerSelected = false;
+
+      if (validation && validation2) {
         // this.$router.push({ path: "search-trip", query: this.query });
 
         const obj = this.query;
