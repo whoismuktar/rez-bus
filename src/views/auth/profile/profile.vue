@@ -18,7 +18,9 @@
             <v-row>
               <v-col cols="6" lg="6" md="6" sm="12" class="py-0">
                 <div class="input-wrapper">
-                  <div class="input-label">Date de naissance</div>
+                  <div class="input-label">
+                    Prénom <span class="asterisk">*</span>
+                  </div>
                   <v-text-field
                     v-model="user.firstName"
                     dense
@@ -31,7 +33,9 @@
 
               <v-col cols="6" lg="6" md="6" sm="12" class="py-0">
                 <div class="input-wrapper">
-                  <div class="input-label">Date de naissance</div>
+                  <div class="input-label">
+                    Nom <span class="asterisk">*</span>
+                  </div>
                   <v-text-field
                     v-model="user.lastName"
                     dense
@@ -44,7 +48,7 @@
 
               <v-col cols="6" class="py-0">
                 <div class="input-wrapper">
-                  <div class="input-label">Date de naissance</div>
+                  <div class="input-label">Téléphone portable</div>
                   <country-phone
                     v-model.number="user.tel"
                     dense
@@ -67,24 +71,11 @@
                 </div>
               </v-col>
 
-              <v-col cols="12" class="py-0">
+              <v-col cols="6" class="py-0">
                 <div class="input-wrapper">
-                  <div class="input-label">Adresse</div>
+                  <div class="input-label">Numéro de CNIB</div>
                   <v-text-field
-                    v-model="user.streetNo"
-                    dense
-                    outlined
-                    hide-details="auto"
-                    :rules="[rules.required]"
-                  ></v-text-field>
-                </div>
-              </v-col>
-
-              <v-col cols="12" class="py-0">
-                <div class="input-wrapper">
-                  <div class="input-label">Complément d'adresse</div>
-                  <v-text-field
-                    v-model="user.streetNo"
+                    v-model="user.cnib"
                     dense
                     outlined
                     hide-details="auto"
@@ -95,40 +86,26 @@
 
               <v-col cols="6" class="py-0">
                 <div class="input-wrapper">
-                  <div class="input-label">Adresse</div>
-                  <v-text-field
-                    v-model="user.postal"
-                    dense
-                    outlined
-                    hide-details="auto"
-                    :rules="[rules.required]"
-                  ></v-text-field>
+                  <div class="input-label">Date d'établissement</div>
+                  <date-dropdown
+                    v-model="user.cnibDate"
+                    :max="maxYear"
+                    :min="minYear"
+                    :default="user.dob ? user.dob : maxYear"
+                  />
                 </div>
               </v-col>
 
               <v-col cols="6" class="py-0">
                 <div class="input-wrapper">
-                  <div class="input-label">Adresse</div>
+                  <div class="input-label">Lieu d'établissement</div>
                   <v-text-field
-                    v-model="user.city"
+                    v-model="user.cnibLocation"
                     dense
                     outlined
                     hide-details="auto"
                     :rules="[rules.required]"
                   ></v-text-field>
-                </div>
-              </v-col>
-
-              <v-col cols="6" class="py-0">
-                <div class="input-wrapper">
-                  <div class="input-label">Adresse</div>
-                  <v-select
-                    v-model="user.country"
-                    outlined
-                    dense
-                    :menu-props="{ offsetY: true }"
-                    :items="countryByName"
-                  ></v-select>
                 </div>
               </v-col>
             </v-row>
