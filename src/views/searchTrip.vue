@@ -641,6 +641,9 @@ export default {
       query: {
         from: "Berlin",
         to: "Munich",
+        price_per_adult: 0,
+        price_per_child: 0,
+        price_per_bicycle: 0,
         adult: 0,
         children: 0,
         bike_slot: 0,
