@@ -87,12 +87,7 @@
               <v-col cols="6" class="py-0">
                 <div class="input-wrapper">
                   <div class="input-label">Date d'établissement</div>
-                  <date-dropdown
-                    v-model="user.cnibDate"
-                    :max="maxYear"
-                    :min="minYear"
-                    :default="user.dob ? user.dob : maxYear"
-                  />
+                  <date-dropdown v-model="user.cnibDate" />
                 </div>
               </v-col>
 
@@ -255,7 +250,7 @@ export default {
       passwordLoader: false,
       deleteLoader: false,
       user: {
-        // dob: "0-0-0",
+        // dob: "1983-01-04",
       },
     };
   },
