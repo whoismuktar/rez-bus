@@ -530,7 +530,7 @@
       transition="scroll-x-reverse-transition"
       :max-width="invoiceActive ? '50%' : ''"
     >
-      <div v-if="reservationActive" class="fillHeight">
+      <div v-if="reservationActive" class="fillHeight reservationActive">
         <v-form ref="selectSeat" class="d-flex justify-end">
           <v-card
             tile
@@ -648,7 +648,23 @@
 
           <v-card tile min-width="410" min-height="100vh" class="ml-n2">
             <v-card tile class="pa-2 text-center">
-              <h2 class="app-title">Réservation de siège</h2>
+              <div>
+                <h2 class="app-title">Réservation de siège</h2>
+
+                <span class="closeModal">
+                  <v-btn
+                    fab
+                    plain
+                    :ripple="false"
+                    @click="
+                      modalActive = false;
+                      reservationActive = false;
+                    "
+                  >
+                    <v-icon>close</v-icon>
+                  </v-btn></span
+                >
+              </div>
 
               <p>{{ queryData.from }} - {{ queryData.to }}</p>
             </v-card>
@@ -1158,9 +1174,10 @@ export default {
       this.$forceUpdate();
     },
     deselectSeat(seatId) {
-      // console.log("deselected");
-      delete this.seats[seatId].selected;
-      this.reservedSeats.slice(seatId, 1);
+      console.log("deselected");
+      delete this.seats[seatId].selected; // delete selected key from seat object
+      this.reservedSeats = this.reservedSeats.slice(seatId, 1);
+      // console.log("reservedSeats", this.reservedSeats);
       // console.log("getCurrentSelection:", this.getCurrentSelection);
 
       this.$forceUpdate();
@@ -1226,7 +1243,7 @@ export default {
     getCurrentSelection: {
       cache: false,
       get() {
-        console.log("action");
+        // console.log("action");
         const seats = this.seats;
         let count = 0;
 
@@ -1323,6 +1340,11 @@ export default {
 }
 .seat-category-description .description-wrapper {
   margin-bottom: 12px;
+}
+
+.reservationActive .closeModal {
+  right: 0px;
+  top: 3px;
 }
 
 /* Bus Diagram */
